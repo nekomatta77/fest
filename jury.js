@@ -142,8 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const jImg = document.getElementById('juryModalImg');
 
     // --- 3. ЛОГИКА БЕСКОНЕЧНОЙ ЛЕНТЫ (INFINITE LOOP) ---
-    // У нас 18 участников. Дублируем массив 3 раза (18*3 = 54 карточки), 
-    // этого достаточно для плавного скролла на любых экранах.
     const infiniteData = [
         ...juryData, ...juryData, ...juryData
     ];
@@ -154,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         card.innerHTML = `
             <div class="jury-img-container">
-                <img src="${actor.img}" alt="${actor.name}" loading="lazy">
+                <img src="${actor.img}" alt="${actor.name}" loading="lazy" decoding="async">
             </div>
             <div class="jury-info">
                 <h3>
@@ -175,39 +173,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Рендер
     if (juryTrack) {
+        const fragment = document.createDocumentFragment();
         infiniteData.forEach(actor => {
             const newCard = createJuryCard(actor);
-            juryTrack.appendChild(newCard);
+            fragment.appendChild(newCard);
         });
+        juryTrack.appendChild(fragment);
 
         // --- ЛОГИКА "ТЕЛЕПОРТА" СКРОЛЛА ---
-        // 300px ширина + 30px отступ = 330px
         const singleSetWidth = (300 + 30) * juryData.length;
         
-        // Ставим скролл на начало 2-го набора (середина)
+        // Ставим скролл на начало 2-го набора
         juryTrack.scrollLeft = singleSetWidth; 
 
+        // Использование requestAnimationFrame для устранения лагов
+        let isScrolling = false;
+
         juryTrack.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    handleInfiniteScroll();
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        });
+
+        function handleInfiniteScroll() {
+            const scrollLeft = juryTrack.scrollLeft;
             // Если ушли далеко вправо (в 3-й сет) -> прыгаем во 2-й
-            if (juryTrack.scrollLeft >= singleSetWidth * 2) {
+            if (scrollLeft >= singleSetWidth * 2) {
                 juryTrack.scrollLeft -= singleSetWidth;
             }
             // Если ушли в начало (в 1-й сет) -> прыгаем во 2-й
-            else if (juryTrack.scrollLeft <= 5) { // 5px допуск
+            else if (scrollLeft <= 5) {
                 juryTrack.scrollLeft += singleSetWidth;
             }
-        });
+        }
     }
 
     // --- 4. ЛОГИКА МОДАЛЬНОГО ОКНА ---
     function openJuryModal(actor) {
+        // Заполняем контент
         jName.innerText = actor.name;
         jRole.innerText = actor.role;
         jBio.innerText = actor.bio;
         jImg.src = actor.img;
         
-        juryModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        // Открытие с requestAnimationFrame
+        requestAnimationFrame(() => {
+            juryModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
     }
 
     if (closeJuryBtn) {
