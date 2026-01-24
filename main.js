@@ -238,7 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(fullGrid) attachLightboxEvents(fullGrid);
     if(closeLightbox) closeLightbox.addEventListener('click', closeLightboxFunc);
 
-    // Функция возврата (Snap-back Logic)
     function constrainState() {
         if (state.scale <= 1.05) {
             state.scale = 1;
@@ -348,7 +347,80 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 10. Анимация Логотипа ---
+    // --- 10. ЛОГИКА МОДАЛКИ "О НАС" ---
+    const aboutModal = document.getElementById('aboutModal');
+    const openAboutBtn = document.getElementById('openAboutBtn');
+    // Используем уникальный класс для закрытия "О нас" чтобы не конфликтовало
+    const closeAboutBtn = document.querySelector('.about-close-btn');
+    const aboutTabs = document.querySelectorAll('.about-tab-btn');
+    const aboutTitle = document.getElementById('aboutTitle');
+    const aboutText = document.getElementById('aboutText');
+
+    const aboutData = {
+        1: {
+            title: "Честное судейство",
+            text: "Наши эксперты серьёзно относятся к конкурсной программе, поэтому не раздают призовые места просто так. Для нас это принципиально важно, чтобы не обесценивать саму суть конкурса."
+        },
+        2: {
+            title: "Круглые столы",
+            text: "Мы предоставляем для наших руководителей возможность побеседовать с экспертами, обсудить сложные композиционные и лексические моменты постановок, сделать свой номер лучше."
+        },
+        3: {
+            title: "Четкий тайминг",
+            text: "Мы готовим программу подсчитывая каждый час, минуту, секунду. Для того чтобы коллективы участвующие у нас, точно знали время завершения нашего фестиваля."
+        }
+    };
+
+    if(openAboutBtn) {
+        openAboutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            aboutModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if(closeAboutBtn) {
+        closeAboutBtn.addEventListener('click', () => {
+            aboutModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    }
+
+    // Закрытие по клику вне окна (общее для всех модалок)
+    window.addEventListener('click', (e) => {
+        if (e.target == aboutModal) {
+            aboutModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Переключение табов
+    aboutTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Удаляем активный класс у всех
+            aboutTabs.forEach(t => t.classList.remove('active'));
+            // Добавляем текущему
+            tab.classList.add('active');
+
+            const tabId = tab.getAttribute('data-tab');
+            const content = aboutData[tabId];
+
+            // Анимация смены текста
+            aboutTitle.style.opacity = 0;
+            aboutText.style.opacity = 0;
+            
+            setTimeout(() => {
+                aboutTitle.innerText = content.title;
+                aboutText.innerText = content.text;
+                
+                aboutTitle.style.opacity = 1;
+                aboutText.style.opacity = 1;
+            }, 200);
+        });
+    });
+
+
+    // --- 11. Анимация Логотипа ---
     const logoImg = document.querySelector('.logo-img');
     if(logoImg) {
         logoImg.addEventListener('click', function(e) {

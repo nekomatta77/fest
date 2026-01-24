@@ -535,7 +535,7 @@ ul {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* --- ЖЮРИ (Карточки на главной) --- */
+/* --- ЖЮРИ (Стили карточек) --- */
 .compact-title-jury {
     margin-bottom: 25px !important;
 }
@@ -615,7 +615,67 @@ ul {
     color: var(--text-muted);
 }
 
-/* --- LIGHTBOX --- */
+/* --- МОДАЛКА "О НАС" (Табы) --- */
+.about-modal-content {
+    max-width: 600px;
+    width: 90%;
+    min-height: 350px;
+}
+
+.about-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.about-tab-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: var(--font-main);
+    font-weight: 500;
+}
+
+.about-tab-btn:hover,
+.about-tab-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.about-content-area {
+    text-align: center;
+    padding: 0 10px;
+}
+
+.about-content-area h3 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--text-main);
+}
+
+.about-content-area p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.fade-in-text {
+    animation: fadeInText 0.5s ease-out;
+}
+
+@keyframes fadeInText {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- LIGHTBOX (Zoom) --- */
 .lightbox {
     display: none;
     position: fixed;
@@ -737,7 +797,7 @@ ul {
     color: #ccc;
 }
 
-/* --- ОБЩИЕ СТИЛИ ДЛЯ МОДАЛОК (База) --- */
+/* --- Modals (General) --- */
 .modal {
     display: none;
     position: fixed;
@@ -752,7 +812,6 @@ ul {
     align-items: center;
 }
 
-/* Стандартное окно (для билетов и т.д.) */
 .modal-content {
     background: white;
     padding: 40px;
@@ -809,11 +868,10 @@ ul {
 
 /* 1. БАЗОВЫЕ СТИЛИ (MOBILE FIRST - То, что видят телефоны) */
 .jury-modal-content {
-    /* Сбрасываем жесткие ограничения ширины */
-    width: 85%; /* Ширина на телефоне */
-    max-width: 400px; /* Чтобы не было слишком огромным на планшете */
+    width: 85%;
+    max-width: 400px;
     padding: 0;
-    overflow: hidden; /* Скругляет фото сверху */
+    overflow: hidden; 
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -821,28 +879,26 @@ ul {
     box-shadow: 0 25px 60px rgba(0,0,0,0.3);
     animation: modalPop 0.4s ease-out;
     position: relative;
-    max-height: 90vh; /* Ограничение по высоте экрана */
+    max-height: 90vh;
 }
 
-/* Тело модалки на телефоне - вертикальная колонка */
 .jury-modal-body {
     display: flex;
     flex-direction: column;
     height: auto; 
-    overflow-y: auto; /* Включает скролл, если контент не влезает */
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 
-/* Фото на телефоне: Квадрат (1:1), без отступов */
 .jury-modal-img-container {
     width: 100%;
     height: auto;
-    aspect-ratio: 1 / 1; /* Делает блок квадратным */
+    aspect-ratio: 1 / 1;
     flex-shrink: 0;
     position: relative;
     background-color: #eee;
-    margin: 0; /* Прижимаем к краям */
-    border-radius: 0; /* Края прямые (скругление дает родитель overflow:hidden) */
+    margin: 0;
+    border-radius: 0; /* Плоский низ */
 }
 
 .jury-modal-img-container img {
@@ -853,7 +909,6 @@ ul {
     display: block;
 }
 
-/* Текст на телефоне */
 .jury-modal-text {
     width: 100%;
     padding: 25px 20px;
@@ -875,7 +930,6 @@ ul {
     text-align-last: left; 
 }
 
-/* Крестик на телефоне */
 .close-jury-btn {
     position: absolute;
     top: 15px;
@@ -896,29 +950,25 @@ ul {
 /* 2. СТИЛИ ДЛЯ ПК (Переопределяем мобильные стили) */
 @media (min-width: 1025px) {
     
-    /* Делаем окно широким и большим */
     .jury-modal-content {
-        max-width: none !important; /* Убираем ограничение 450px */
-        width: 1200px !important;   /* Жесткая ширина ПК */
+        max-width: none !important;
+        width: 1200px !important;   /* ШИРИНА ПК */
         border-radius: 30px;
     }
 
-    /* Располагаем в ряд (Фото | Текст) */
     .jury-modal-body {
         flex-direction: row !important;
-        height: 600px !important; /* Фиксированная высота ПК */
-        overflow: hidden !important; /* Убираем общий скролл, он будет только у текста */
+        height: 600px !important;   /* ВЫСОТА ПК */
+        overflow: hidden !important;
     }
 
-    /* Фото слева: Квадрат 600x600 */
     .jury-modal-img-container {
-        aspect-ratio: auto !important; /* Сбрасываем ratio */
-        width: 600px !important;       /* Ширина = Высоте окна */
+        aspect-ratio: auto !important;
+        width: 600px !important;    /* Квадратное фото */
         flex: 0 0 600px !important;
         height: 100%;
     }
 
-    /* Текст справа: занимает остаток */
     .jury-modal-text {
         flex: 1;
         padding: 60px 50px !important;
@@ -928,20 +978,18 @@ ul {
         text-align: left !important;
     }
 
-    /* Возвращаем заголовки влево на ПК */
     .jury-modal-text h2, 
     .jury-modal-text p#juryModalRole {
         text-align: left !important;
     }
 
-    /* Скролл только для длинного текста */
     .jury-bio-scroll {
         overflow-y: auto !important;
         padding-right: 15px;
         margin-top: 15px;
         height: auto;
         flex-grow: 1;
-        text-align: left !important; /* На ПК текст лучше смотрится слева, не justify */
+        text-align: left !important;
         scrollbar-width: thin;
         scrollbar-color: var(--secondary) transparent;
     }
@@ -957,7 +1005,6 @@ ul {
         background: transparent;
     }
 
-    /* Крестик на ПК: темный, без фона */
     .close-jury-btn {
         top: 25px;
         right: 30px;
@@ -974,7 +1021,7 @@ ul {
     }
 }
 
-/* Остальные адаптивные стили (планшеты и т.д.) */
+/* Остальные адаптивные стили */
 @media (max-width: 1024px) {
     .full-gallery-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -991,7 +1038,10 @@ ul {
     .dark-bg { margin: 0; border-radius: 0; }
     .gallery-img-thumb { height: 220px; }
     .full-gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .gallery-modal .modal-content { padding: 20px; } /* Это для галереи, не трогает жюри */
+    .gallery-modal .modal-content { padding: 20px; }
     .close-lightbox { top: 20px; right: 20px; font-size: 2.5rem; }
     .zoom-hint { display: none; }
+    /* Для модалки "О нас" на мобильных */
+    .about-tabs { flex-direction: column; width: 100%; }
+    .about-tab-btn { width: 100%; text-align: center; }
 }
