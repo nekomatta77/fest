@@ -2,26 +2,96 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вдохновение 2.0 | Фестиваль Искусств</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta 
+        name="viewport" 
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+    <meta 
+        name="description" 
+        content="Фестиваль искусств Вдохновение 2.0. Театр, музыка и перформансы."
+    >
+    <title>
+        Вдохновение 2.0 | Фестиваль Искусств
+    </title>
+    
+    <link 
+        rel="stylesheet" 
+        href="style.css"
+    >
+    
+    <link 
+        rel="preconnect" 
+        href="https://fonts.googleapis.com"
+    >
+    <link 
+        rel="preconnect" 
+        href="https://fonts.gstatic.com" 
+        crossorigin
+    >
+    <link 
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" 
+        rel="stylesheet"
+    >
+    
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    >
 </head>
 <body>
 
+    <div class="menu-overlay"></div>
+
     <nav class="navbar">
-        <a href="#" class="logo-container">
-            <img src="assets/logo.png" alt="Вдохновение Лого" class="logo-img">
+        <a 
+            href="#" 
+            class="logo-container" 
+            aria-label="На главную"
+        >
+            <img 
+                src="assets/logo.png" 
+                alt="Вдохновение Лого" 
+                class="logo-img"
+            >
         </a>
 
         <ul class="nav-links">
-            <li><a href="#about">О фестивале</a></li>
-            <li><a href="#program">Программа</a></li>
-            <li><a href="#gallery">Галерея</a></li>
-            <li><a href="#" class="btn-nav open-modal-btn">Купить билет</a></li>
+            <li style="--i:1;">
+                <a href="#about">
+                    О фестивале
+                </a>
+            </li>
+            <li style="--i:2;">
+                <a href="#program">
+                    Программа
+                </a>
+            </li>
+            <li style="--i:3;">
+                <a href="#gallery">
+                    Галерея
+                </a>
+            </li>
+            <li style="--i:4;">
+                <a href="#jury">
+                    Жюри
+                </a>
+            </li>
+            <li style="--i:5;">
+                <a 
+                    href="#" 
+                    class="btn-nav open-modal-btn"
+                >
+                    Купить билет
+                </a>
+            </li>
         </ul>
-        <div class="burger">
+        
+        <div 
+            class="burger" 
+            aria-label="Меню" 
+            role="button" 
+            tabindex="0"
+        >
             <div class="line1"></div>
             <div class="line2"></div>
             <div class="line3"></div>
@@ -30,100 +100,352 @@
 
     <header class="hero">
         <div class="hero-content">
-            <h1>Искусство <br><span>без границ</span></h1>
-            <p>Главное культурное событие года. Театр, музыка, перформанс.</p>
-            <div class="hero-buttons">
-                <a href="#program" class="btn-primary">Смотреть программу</a>
-                <a href="#about" class="btn-secondary">Узнать больше</a>
+            <div class="glass-card fade-in visible">
+                <h1>
+                    Искусство 
+                    <span class="italic-accent">
+                        без границ
+                    </span>
+                </h1>
+                <p>
+                    Главное культурное событие года. 
+                    <br>
+                    Театр. Музыка. Перформанс.
+                </p>
+                <div class="hero-buttons">
+                    <a 
+                        href="#program" 
+                        class="btn-primary"
+                    >
+                        Смотреть программу
+                    </a>
+                    <a 
+                        href="#about" 
+                        class="btn-secondary"
+                    >
+                        Узнать больше
+                    </a>
+                </div>
             </div>
         </div>
         <div class="hero-overlay"></div>
     </header>
 
-    <section id="about" class="section">
+    <section 
+        id="about" 
+        class="section"
+    >
         <div class="container">
-            <h2 class="section-title">О Фестивале</h2>
+            <h2 class="section-title">
+                О Фестивале
+            </h2>
             <div class="about-grid">
                 <div class="about-card fade-in">
                     <i class="fas fa-theater-masks"></i>
-                    <h3>Театр</h3>
-                    <p>Лучшие постановки от ведущих режиссеров страны.</p>
+                    <h3>
+                        Театр
+                    </h3>
+                    <p>
+                        Лучшие постановки от ведущих режиссеров страны.
+                    </p>
                 </div>
                 <div class="about-card fade-in">
                     <i class="fas fa-music"></i>
-                    <h3>Музыка</h3>
-                    <p>Живой звук, симфонические оркестры и инди-группы.</p>
+                    <h3>
+                        Музыка
+                    </h3>
+                    <p>
+                        Живой звук, симфонические оркестры и инди-группы.
+                    </p>
                 </div>
                 <div class="about-card fade-in">
                     <i class="fas fa-lightbulb"></i>
-                    <h3>Лекторий</h3>
-                    <p>Встречи с творцами, мастер-классы и дискуссии.</p>
+                    <h3>
+                        Лекторий
+                    </h3>
+                    <p>
+                        Встречи с творцами, мастер-классы и дискуссии.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="program" class="section dark-bg">
+    <section 
+        id="program" 
+        class="section dark-bg"
+    >
         <div class="container">
-            <h2 class="section-title">Программа</h2>
+            <h2 class="section-title">
+                Программа
+            </h2>
             <div class="schedule">
                 <div class="schedule-item fade-in">
-                    <span class="time">12:00</span>
+                    <span class="time">
+                        12:00
+                    </span>
                     <div class="details">
-                        <h3>Открытие фестиваля</h3>
-                        <p>Главная сцена. Приветственное слово и перформанс.</p>
+                        <h3>
+                            Открытие фестиваля
+                        </h3>
+                        <p>
+                            Главная сцена. Приветственное слово и перформанс.
+                        </p>
                     </div>
                 </div>
                 <div class="schedule-item fade-in">
-                    <span class="time">14:30</span>
+                    <span class="time">
+                        14:30
+                    </span>
                     <div class="details">
-                        <h3>Спектакль «Полет»</h3>
-                        <p>Театральная площадка. Режиссер А. Иванов.</p>
+                        <h3>
+                            Спектакль «Полет»
+                        </h3>
+                        <p>
+                            Театральная площадка. Режиссер А. Иванов.
+                        </p>
                     </div>
                 </div>
                 <div class="schedule-item fade-in">
-                    <span class="time">19:00</span>
+                    <span class="time">
+                        19:00
+                    </span>
                     <div class="details">
-                        <h3>Вечерний Гала-концерт</h3>
-                        <p>Симфонический оркестр и световое шоу.</p>
+                        <h3>
+                            Вечерний Гала-концерт
+                        </h3>
+                        <p>
+                            Симфонический оркестр и световое шоу.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <footer id="contact" class="footer">
+    
+    <section 
+        id="gallery" 
+        class="section gallery-section"
+    >
         <div class="container">
-            <h2>Стань частью вдохновения</h2>
-            <p>Москва, Парк Останкино | 25-27 Июля</p>
-            <a href="#" class="btn-primary open-modal-btn">Забронировать место</a>
-            <div class="socials">
-                <a href="#"><i class="fab fa-vk"></i></a>
-                <a href="#"><i class="fab fa-telegram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+            <h2 class="section-title compact-title">
+                Галерея
+            </h2>
+        </div>
+        
+        <div class="gallery-scroller-container fade-in">
+            <div 
+                class="gallery-track" 
+                id="galleryTrack"
+            >
+                </div>
+        </div>
+
+        <div 
+            class="container" 
+            style="text-align: center; margin-top: 30px;"
+        >
+            <button 
+                id="openGalleryBtn" 
+                class="btn-secondary" 
+                style="border-color: var(--primary); color: var(--text-main);"
+            >
+                Загрузка фото...
+            </button>
+        </div>
+    </section>
+
+    <section 
+        id="jury" 
+        class="section jury-section"
+    >
+        <div class="container">
+            <h2 class="section-title compact-title-jury">
+                Жюри
+            </h2>
+            
+            <div class="jury-scroller-container fade-in">
+                <div 
+                    class="jury-track" 
+                    id="juryTrack"
+                >
+                    </div>
             </div>
-            <p class="copyright">© 2026 Vdoxnovenie Festival. Design by AI.</p>
+        </div>
+    </section>
+
+    <footer 
+        id="contact" 
+        class="footer"
+    >
+        <div class="container">
+            <h2>
+                Стань частью 
+                <span class="italic-accent-dark">
+                    вдохновения
+                </span>
+            </h2>
+            <p>
+                Москва, Парк Останкино | 25-27 Июля
+            </p>
+            <a 
+                href="#" 
+                class="btn-primary open-modal-btn"
+            >
+                Забронировать место
+            </a>
+            <div class="socials">
+                <a href="#" aria-label="VK">
+                    <i class="fab fa-vk"></i>
+                </a>
+                <a href="#" aria-label="Telegram">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="#" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            <p class="copyright">
+                © 2026 Lubov Festival.
+            </p>
         </div>
     </footer>
 
-    <div id="ticketModal" class="modal">
+    <div 
+        id="ticketModal" 
+        class="modal"
+    >
         <div class="modal-content">
             <span class="close-btn">&times;</span>
-            <h2>Купить билет</h2>
-            <p>Заполните форму, и мы пришлем билет на почту.</p>
-            <form id="ticketForm">
-                <input type="text" placeholder="Ваше Имя" required>
-                <input type="email" placeholder="Ваш Email" required>
-                <select>
-                    <option>Входной билет (1000₽)</option>
-                    <option>VIP зона (3000₽)</option>
-                    <option>Студенческий (500₽)</option>
-                </select>
-                <button type="submit" class="btn-primary full-width">Оплатить</button>
-            </form>
+            <div id="modalFormContainer">
+                <h2 style="font-family: 'Playfair Display', serif;">
+                    Купить билет
+                </h2>
+                <p style="margin-bottom: 20px; color: var(--text-muted);">
+                    Заполните форму, и мы пришлем билет на почту.
+                </p>
+                <form id="ticketForm">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="name" 
+                            placeholder="Ваше Имя" 
+                            required
+                        >
+                    </div>
+                    <div class="input-group">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            placeholder="Ваш Email" 
+                            required
+                        >
+                    </div>
+                    <div class="input-group">
+                        <select id="ticketType">
+                            <option value="standard">Входной билет (1000₽)</option>
+                            <option value="vip">VIP зона (3000₽)</option>
+                            <option value="student">Студенческий (500₽)</option>
+                        </select>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="btn-primary full-width" 
+                        id="submitBtn"
+                    >
+                        Оплатить
+                    </button>
+                </form>
+            </div>
+            <div 
+                id="modalSuccessContainer" 
+                style="display: none; text-align: center;"
+            >
+                <i 
+                    class="fas fa-check-circle" 
+                    style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"
+                ></i>
+                <h2>Спасибо!</h2>
+                <p>Билет отправлен на вашу почту.</p>
+                <button 
+                    class="btn-secondary close-modal-action" 
+                    style="margin-top: 20px;"
+                >
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div 
+        id="galleryModal" 
+        class="modal gallery-modal"
+    >
+        <div class="modal-content gallery-content">
+            <span class="close-gallery-btn">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px;">
+                Фотоотчет
+            </h2>
+            <div 
+                class="full-gallery-grid" 
+                id="fullGalleryGrid"
+            ></div>
+        </div>
+    </div>
+
+    <div 
+        id="juryModal" 
+        class="modal jury-modal-overlay"
+    >
+        <div class="modal-content jury-modal-content">
+            <span class="close-jury-btn">&times;</span>
+            <div class="jury-modal-body">
+                <div class="jury-modal-img-container">
+                    <img 
+                        id="juryModalImg" 
+                        src="" 
+                        alt="Jury Photo"
+                    >
+                </div>
+                <div class="jury-modal-text">
+                    <h2 
+                        id="juryModalName" 
+                        style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 10px; line-height: 1.2;"
+                    ></h2>
+                    <p 
+                        id="juryModalRole" 
+                        style="color: var(--primary); font-weight: 600; margin-bottom: 25px; font-size: 1.1rem;"
+                    ></p>
+                    <div class="jury-bio-scroll">
+                        <p 
+                            id="juryModalBio" 
+                            style="line-height: 1.8; color: var(--text-main); font-size: 1rem;"
+                        ></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div 
+        id="lightbox" 
+        class="lightbox"
+    >
+        <span class="close-lightbox">&times;</span>
+        <div class="lightbox-wrapper">
+            <img 
+                class="lightbox-image" 
+                id="lightboxImg" 
+                src="" 
+                alt="Full view"
+            >
+        </div>
+        <div class="zoom-hint">
+            Колесико / Жест - Зум | Драг - Перемещение
         </div>
     </div>
 
     <script src="main.js"></script>
+    <script src="jury.js"></script>
 </body>
 </html>
