@@ -14,15 +14,17 @@
     --radius-md: 16px;
     --shadow-soft: 0 15px 45px rgba(110, 133, 183, 0.12);
 
-    /* --- Z-INDEX SYSTEM (ИСПРАВЛЕНО) --- */
+    /* --- Z-INDEX SYSTEM (ФИНАЛЬНАЯ ВЕРСИЯ) --- */
     --z-negative: -1;
     --z-base: 1;
+    
+    /* Footer должен быть выше базы, но ниже меню */
     --z-footer: 50;
     
-    /* Overlay должен быть НИЖЕ навигации, чтобы не перекрывать меню */
+    /* Overlay затемнения (900) должен быть НИЖЕ Навигации (1000) */
     --z-menu-overlay: 900; 
     
-    /* Навигация должна быть ВЫШЕ оверлея */
+    /* Навигация и Бургер - самые главные */
     --z-navbar: 1000; 
     
     --z-modal-overlay: 2000;
@@ -98,7 +100,7 @@ ul {
     padding: 20px 5%;
     position: fixed;
     width: 100%;
-    z-index: var(--z-navbar); /* Теперь это 1000 - выше оверлея */
+    z-index: var(--z-navbar); /* Исправлено: 1000 */
     transition: padding 0.4s ease;
 }
 
@@ -243,7 +245,7 @@ ul {
     background-color: var(--text-main) !important;
 }
 
-/* --- Мобильное Меню --- */
+/* --- Мобильное Меню (ИСПРАВЛЕНО: Четкий текст) --- */
 @media (max-width: 768px) {
     .burger {
         display: block;
@@ -265,12 +267,14 @@ ul {
         border-bottom-right-radius: 40px;
         box-shadow: 0 15px 50px rgba(0,0,0,0.1);
         
-        /* Меню находится внутри навбара, который 1000 */
+        /* z-index больше не нужен, так как родитель (.navbar) уже 1000 */
         z-index: 1001; 
         
         transform: translate3d(0, -120%, 0);
         will-change: transform;
         transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        
+        /* Убрана текстура, которая могла шуметь */
         background: var(--bg-page);
     }
 
@@ -308,7 +312,7 @@ ul {
     }
 }
 
-/* --- Overlay --- */
+/* --- Overlay (ИСПРАВЛЕНО: Ниже меню) --- */
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -318,7 +322,7 @@ ul {
     background: rgba(44, 62, 80, 0.4);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    z-index: var(--z-menu-overlay); /* 900 - ниже меню (1000+) */
+    z-index: var(--z-menu-overlay); /* 900 */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease;
@@ -330,14 +334,15 @@ ul {
     visibility: visible;
 }
 
-/* --- Hero --- */
+/* --- Hero (ИСПРАВЛЕНО: Кэшбастинг картинки) --- */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop') no-repeat center/cover;
+    /* Добавлено &v=2 к URL картинки, чтобы сбросить кэш браузера */
+    background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop&v=2') no-repeat center/cover;
     position: relative;
     padding: 0 20px;
     will-change: transform;
@@ -591,7 +596,6 @@ ul {
     scrollbar-color: var(--primary-light) transparent;
 }
 
-/* Скроллбар для Webkit */
 .gallery-track::-webkit-scrollbar {
     height: 6px;
 }
@@ -665,7 +669,7 @@ ul {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* --- ЖЮРИ (ФИНАЛЬНЫЕ ПРАВКИ) --- */
+/* --- ЖЮРИ --- */
 .compact-title-jury {
     margin-bottom: 25px !important;
 }
