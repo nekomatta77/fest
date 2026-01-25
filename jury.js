@@ -135,17 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const juryModal = document.getElementById('juryModal');
     const closeJuryBtn = document.querySelector('.close-jury-btn');
     
-    // Элементы внутри модального окна
     const jName = document.getElementById('juryModalName');
     const jRole = document.getElementById('juryModalRole');
     const jBio = document.getElementById('juryModalBio');
     const jImg = document.getElementById('juryModalImg');
 
-    // --- 3. ЛОГИКА БЕСКОНЕЧНОЙ ЛЕНТЫ (INFINITE LOOP) ---
-    const infiniteData = [
-        ...juryData, ...juryData, ...juryData
-    ];
-
+    // --- 3. РЕНДЕРИНГ (Обычный, без клонов) ---
     function createJuryCard(actor) {
         const card = document.createElement('div');
         card.classList.add('jury-card');
@@ -155,12 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${actor.img}" alt="${actor.name}" loading="lazy" decoding="async">
             </div>
             <div class="jury-info">
-                <h3>
-                    ${actor.name}
-                </h3>
-                <p>
-                    ${actor.role}
-                </p>
+                <h3>${actor.name}</h3>
+                <p>${actor.role}</p>
             </div>
         `;
         
@@ -171,73 +162,51 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    // Рендер
     if (juryTrack) {
+        // Очищаем трек на всякий случай
+        juryTrack.innerHTML = '';
+        
         const fragment = document.createDocumentFragment();
-        infiniteData.forEach(actor => {
-            const newCard = createJuryCard(actor);
-            fragment.appendChild(newCard);
+        // Используем оригинальный массив данных 1 раз (18 карточек)
+        juryData.forEach(actor => {
+            fragment.appendChild(createJuryCard(actor));
         });
         juryTrack.appendChild(fragment);
-
-        // --- ЛОГИКА "ТЕЛЕПОРТА" СКРОЛЛА ---
-        const singleSetWidth = (300 + 30) * juryData.length;
-        
-        // Ставим скролл на начало 2-го набора
-        juryTrack.scrollLeft = singleSetWidth; 
-
-        // Использование requestAnimationFrame для устранения лагов
-        let isScrolling = false;
-
-        juryTrack.addEventListener('scroll', () => {
-            if (!isScrolling) {
-                window.requestAnimationFrame(() => {
-                    handleInfiniteScroll();
-                    isScrolling = false;
-                });
-                isScrolling = true;
-            }
-        });
-
-        function handleInfiniteScroll() {
-            const scrollLeft = juryTrack.scrollLeft;
-            // Если ушли далеко вправо (в 3-й сет) -> прыгаем во 2-й
-            if (scrollLeft >= singleSetWidth * 2) {
-                juryTrack.scrollLeft -= singleSetWidth;
-            }
-            // Если ушли в начало (в 1-й сет) -> прыгаем во 2-й
-            else if (scrollLeft <= 5) {
-                juryTrack.scrollLeft += singleSetWidth;
-            }
-        }
     }
 
     // --- 4. ЛОГИКА МОДАЛЬНОГО ОКНА ---
     function openJuryModal(actor) {
-        // Заполняем контент
         jName.innerText = actor.name;
         jRole.innerText = actor.role;
         jBio.innerText = actor.bio;
         jImg.src = actor.img;
         
-        // Открытие с requestAnimationFrame
         requestAnimationFrame(() => {
+            juryModal.classList.add('active');
             juryModal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         });
     }
 
+    function closeJuryModalFunc() {
+        juryModal.style.display = 'none';
+        juryModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
     if (closeJuryBtn) {
-        closeJuryBtn.addEventListener('click', () => {
-            juryModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
+        closeJuryBtn.addEventListener('click', closeJuryModalFunc);
     }
 
     window.addEventListener('click', (e) => {
         if (e.target == juryModal) {
-            juryModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            closeJuryModalFunc();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && juryModal.style.display === 'flex') {
+            closeJuryModalFunc();
         }
     });
 

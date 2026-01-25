@@ -110,7 +110,7 @@
             <div class="glass-card fade-in visible">
                 <h1>
                     Искусство 
-                    <span class="italic-accent">
+                    <span id="particleContainer" class="italic-accent particle-wrapper">
                         без границ
                     </span>
                 </h1>
@@ -364,23 +364,37 @@
                 <p style="margin-bottom: 20px; color: var(--text-muted);">
                     Заполните форму, и мы пришлем билет на почту.
                 </p>
-                <form id="ticketForm">
+                <form id="ticketForm" novalidate>
                     <div class="input-group">
                         <input 
                             type="text" 
                             id="name" 
                             placeholder="Ваше Имя" 
-                            required
+                            autocomplete="off"
                         >
+                        <span class="error-msg" id="nameError"></span>
                     </div>
+                    
+                    <div class="input-group">
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            placeholder="+7 (___) ___-__-__" 
+                            autocomplete="off"
+                        >
+                        <span class="error-msg" id="phoneError"></span>
+                    </div>
+
                     <div class="input-group">
                         <input 
                             type="email" 
                             id="email" 
                             placeholder="Ваш Email" 
-                            required
+                            autocomplete="off"
                         >
+                        <span class="error-msg" id="emailError"></span>
                     </div>
+
                     <div class="input-group">
                         <select id="ticketType">
                             <option value="standard">Входной билет (1000₽)</option>
@@ -388,12 +402,15 @@
                             <option value="student">Студенческий (500₽)</option>
                         </select>
                     </div>
+                    
                     <button 
                         type="submit" 
                         class="btn-primary full-width" 
-                        id="submitBtn"
+                        id="submitBtn" 
+                        disabled
+                        style="opacity: 0.6; cursor: not-allowed;"
                     >
-                        Оплатить
+                        Заполните поля
                     </button>
                 </form>
             </div>
@@ -487,5 +504,5 @@
 
     <script src="main.js"></script>
     <script src="jury.js"></script>
-</body>
+    </body>
 </html>

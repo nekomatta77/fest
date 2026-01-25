@@ -4,9 +4,7 @@
     --primary-light: #b2c8df;
     --secondary: #c4d7e0;
     
-    /* Обновленная палитра фона */
-    --bg-page: #fdfbf7; /* Теплый бумажный оттенок */
-    
+    --bg-page: #fdfbf7;
     --bg-card: #ffffff;
     --text-main: #2c3e50;
     --text-muted: #7f8c8d;
@@ -15,6 +13,47 @@
     --radius-lg: 30px;
     --radius-md: 16px;
     --shadow-soft: 0 15px 45px rgba(110, 133, 183, 0.12);
+
+    /* --- Z-INDEX SYSTEM (ИСПРАВЛЕНО) --- */
+    --z-negative: -1;
+    --z-base: 1;
+    --z-footer: 50;
+    
+    /* Overlay должен быть НИЖЕ навигации, чтобы не перекрывать меню */
+    --z-menu-overlay: 900; 
+    
+    /* Навигация должна быть ВЫШЕ оверлея */
+    --z-navbar: 1000; 
+    
+    --z-modal-overlay: 2000;
+    --z-modal-content: 2001;
+    --z-lightbox: 3000;
+    --z-lightbox-btn: 3001;
+}
+
+/* --- Глобальные настройки скроллбара --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(178, 200, 223, 0.2);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #5a6e9a;
+}
+
+/* --- Класс для блокировки прокрутки --- */
+body.lock-scroll {
+    overflow: hidden !important;
+    height: 100vh;
+    touch-action: none;
+    padding-right: 8px;
 }
 
 * {
@@ -33,19 +72,13 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
     overscroll-behavior: none;
-
-    /* --- 1. ОБНОВЛЕННЫЙ ФОН: Заметная текстура "Холст/Акварельная бумага" --- */
     background-color: var(--bg-page);
     background-image: 
-        /* Слой 1: Текстура волокон (SVG паттерн) */
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232c3e50' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-        /* Слой 2: Легкий шум для зернистости */
         url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"),
-        /* Слой 3: Градиенты для глубины */
         radial-gradient(circle at 50% 0%, #ffffff 0%, transparent 70%),
         radial-gradient(circle at 80% 80%, rgba(178, 200, 223, 0.15) 0%, transparent 50%);
-    
-    background-attachment: fixed; /* Текстура стоит на месте при скролле */
+    background-attachment: fixed;
 }
 
 a {
@@ -65,7 +98,7 @@ ul {
     padding: 20px 5%;
     position: fixed;
     width: 100%;
-    z-index: 1000;
+    z-index: var(--z-navbar); /* Теперь это 1000 - выше оверлея */
     transition: padding 0.4s ease;
 }
 
@@ -82,7 +115,7 @@ ul {
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s ease;
-    z-index: -1;
+    z-index: var(--z-negative);
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     border-bottom: 1px solid rgba(0,0,0,0.02);
 }
@@ -96,7 +129,7 @@ ul {
     padding: 15px 5%;
 }
 
-/* --- Логотип (Cross-Fade анимация) --- */
+/* --- Логотип --- */
 .logo-container {
     display: flex;
     align-items: center;
@@ -113,6 +146,7 @@ ul {
     will-change: transform;
     cursor: pointer;
     -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .logo-base {
@@ -127,8 +161,7 @@ ul {
     z-index: 2;
     filter: brightness(0) saturate(100%) invert(84%) sepia(12%) saturate(836%) hue-rotate(180deg) brightness(98%) contrast(93%) drop-shadow(0 0 8px rgba(110, 133, 183, 0.6));
     opacity: 1;
-    transition: opacity 0.8s ease-in-out, 
-                transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: opacity 0.8s ease-in-out, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .navbar:not(.scrolled) .logo-overlay {
@@ -231,11 +264,14 @@ ul {
         border-bottom-left-radius: 40px;
         border-bottom-right-radius: 40px;
         box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-        z-index: 999;
+        
+        /* Меню находится внутри навбара, который 1000 */
+        z-index: 1001; 
+        
         transform: translate3d(0, -120%, 0);
         will-change: transform;
         transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+        background: var(--bg-page);
     }
 
     .nav-links.nav-active {
@@ -282,7 +318,7 @@ ul {
     background: rgba(44, 62, 80, 0.4);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    z-index: 998;
+    z-index: var(--z-menu-overlay); /* 900 - ниже меню (1000+) */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease;
@@ -304,6 +340,7 @@ ul {
     background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop') no-repeat center/cover;
     position: relative;
     padding: 0 20px;
+    will-change: transform;
 }
 
 .hero-overlay {
@@ -321,6 +358,7 @@ ul {
     z-index: 2;
     max-width: 900px;
     width: 100%;
+    will-change: transform;
 }
 
 .glass-card {
@@ -332,6 +370,7 @@ ul {
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 20px 50px rgba(0,0,0,0.2);
     display: inline-block;
+    will-change: transform;
 }
 
 .hero h1 {
@@ -345,6 +384,7 @@ ul {
     text-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+/* --- СТИЛИ ДЛЯ АНИМАЦИИ ЧАСТИЦ --- */
 .italic-accent {
     font-style: italic;
     font-weight: 400;
@@ -352,6 +392,24 @@ ul {
     font-size: 0.8em;
     margin-top: 5px;
     color: rgba(255,255,255,0.95);
+    min-height: 1.2em; 
+}
+
+.particle-wrapper {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.char {
+    display: inline-block;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    transform-origin: center center;
+}
+
+.char.space {
+    width: 0.3em;
 }
 
 .hero p {
@@ -427,7 +485,9 @@ ul {
     box-shadow: var(--shadow-soft);
     transition: 0.4s;
     border: 1px solid rgba(255,255,255,0.5);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+    background-image: none;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .about-card:hover {
@@ -475,7 +535,8 @@ ul {
     border-left: 4px solid var(--primary-light);
     transition: 0.3s;
     align-items: center;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+    background-image: none; 
+    will-change: transform;
 }
 
 .schedule-item:hover {
@@ -524,11 +585,19 @@ ul {
     padding: 0 5%;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    
+    /* Скроллбар включен, но тонкий */
+    scrollbar-width: thin; 
+    scrollbar-color: var(--primary-light) transparent;
 }
 
+/* Скроллбар для Webkit */
 .gallery-track::-webkit-scrollbar {
-    display: none;
+    height: 6px;
+}
+.gallery-track::-webkit-scrollbar-thumb {
+    background-color: var(--primary-light);
+    border-radius: 4px;
 }
 
 .gallery-img-thumb {
@@ -541,6 +610,8 @@ ul {
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
     cursor: pointer;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .gallery-img-thumb:hover {
@@ -586,6 +657,7 @@ ul {
     transition: 0.3s;
     background-color: #eee;
     cursor: pointer;
+    will-change: transform;
 }
 
 .gallery-grid-img:hover {
@@ -593,7 +665,7 @@ ul {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* --- ЖЮРИ --- */
+/* --- ЖЮРИ (ФИНАЛЬНЫЕ ПРАВКИ) --- */
 .compact-title-jury {
     margin-bottom: 25px !important;
 }
@@ -609,16 +681,30 @@ ul {
     display: flex;
     gap: 30px;
     overflow-x: auto;
-    padding: 40px calc(50% - 150px);
+    
+    /* Стандартный паддинг слева */
+    padding: 40px 5%;
+    
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    scroll-padding-inline: calc(50% - 150px);
-    will-change: scroll-position;
+    
+    /* ВКЛЮЧЕННЫЙ скроллбар (Chrome/Safari/Firefox) */
+    scrollbar-width: thin; 
+    scrollbar-color: var(--primary-light) transparent;
 }
 
+/* Стили скроллбара */
 .jury-track::-webkit-scrollbar {
-    display: none;
+    height: 8px;
+    display: block;
+}
+.jury-track::-webkit-scrollbar-track {
+    background: rgba(178, 200, 223, 0.2);
+    border-radius: 4px;
+}
+.jury-track::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
 }
 
 .jury-card {
@@ -632,10 +718,14 @@ ul {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     flex-shrink: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
-    content-visibility: auto;
-    contain-intrinsic-size: 300px 450px;
-    will-change: transform;
+    
+    background-image: none; 
+    will-change: transform; 
+    transform: translateZ(0); 
+    
+    backface-visibility: hidden; 
+    -webkit-font-smoothing: subpixel-antialiased;
+    contain: paint layout;
 }
 
 .jury-card:hover {
@@ -648,6 +738,7 @@ ul {
     width: 100%;
     height: 350px;
     overflow: hidden;
+    background: #f0f0f0;
 }
 
 .jury-img-container img {
@@ -657,6 +748,7 @@ ul {
     transition: transform 0.5s ease;
     object-position: top center;
     backface-visibility: hidden; 
+    will-change: transform;
 }
 
 .jury-card:hover .jury-img-container img {
@@ -686,7 +778,8 @@ ul {
     max-width: 600px;
     width: 90%;
     min-height: 350px;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    background-image: none;
+    background-color: white;
 }
 
 .about-tabs {
@@ -742,11 +835,101 @@ ul {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* --- Модальные окна (Forms) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: var(--z-modal-overlay);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 42, 55, 0.85); 
+    justify-content: center;
+    align-items: center;
+    will-change: opacity; 
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 450px;
+    animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    background-image: none;
+    will-change: transform, opacity;
+    z-index: var(--z-modal-content);
+}
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* СТИЛИ ДЛЯ ВАЛИДАЦИИ ФОРМЫ */
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.modal input, .modal select {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    font-family: var(--font-main);
+    background: rgba(255,255,255,0.8);
+    transition: all 0.3s ease;
+}
+
+.modal input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 5px rgba(110, 133, 183, 0.2);
+}
+
+/* Скрытые сообщения об ошибках */
+.error-msg {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.full-width {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+    will-change: opacity, transform;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* --- LIGHTBOX --- */
 .lightbox {
     display: none;
     position: fixed;
-    z-index: 3000;
+    z-index: var(--z-lightbox);
     left: 0;
     top: 0;
     width: 100%;
@@ -798,7 +981,7 @@ ul {
     font-size: 3rem;
     cursor: pointer;
     transition: 0.3s;
-    z-index: 3001;
+    z-index: var(--z-lightbox-btn);
 }
 
 .close-lightbox:hover {
@@ -817,12 +1000,101 @@ ul {
     z-index: 3002;
 }
 
-/* --- Footer --- */
+/* --- МОДАЛЬНОЕ ОКНО ЖЮРИ --- */
+.jury-modal-overlay {
+    z-index: var(--z-modal-overlay);
+}
+
+.jury-modal-content {
+    width: 85%;
+    max-width: 400px;
+    padding: 0;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 25px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25); 
+    animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    max-height: 90vh;
+    contain: content;
+    z-index: var(--z-modal-content);
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+.jury-modal-body {
+    display: flex;
+    flex-direction: column;
+    height: auto; 
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.jury-modal-img-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+    position: relative;
+    background-color: #eee;
+    margin: 0;
+    border-radius: 0;
+}
+
+.jury-modal-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+
+.jury-modal-text {
+    width: 100%;
+    padding: 25px 20px;
+    overflow: visible;
+}
+
+.jury-modal-text h2, 
+.jury-modal-text p#juryModalRole {
+    text-align: center;
+}
+
+.jury-bio-scroll {
+    overflow: visible;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    text-align-last: left; 
+}
+
+.close-jury-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: white;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 20;
+    border: none;
+}
+
+/* --- Footer (ИСПРАВЛЕН Z-INDEX) --- */
 .footer {
     text-align: center;
     position: relative;
     overflow: hidden;
-    z-index: 1;
+    z-index: var(--z-footer);
     
     background-color: #fdfbf7;
     background-image: 
@@ -928,164 +1200,6 @@ ul {
     font-size: 0.85rem;
     color: #999;
     letter-spacing: 0.5px;
-}
-
-/* --- Modals (ОПТИМИЗАЦИЯ ДЛЯ БЫСТРОДЕЙСТВИЯ) --- */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    /* ВАЖНО: Убрано backdrop-filter: blur() — главная причина лагов */
-    background-color: rgba(30, 42, 55, 0.85); 
-    justify-content: center;
-    align-items: center;
-    
-    /* Сообщаем браузеру, что будем анимировать */
-    will-change: opacity; 
-}
-
-.modal-content {
-    background: white;
-    padding: 40px;
-    border-radius: var(--radius-lg);
-    width: 90%;
-    max-width: 450px;
-    animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-    will-change: transform, opacity;
-}
-
-/* Упрощенная и ускоренная анимация */
-@keyframes modalPop {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-.modal input, .modal select {
-    width: 100%;
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    margin: 10px 0;
-    font-family: var(--font-main);
-    background: rgba(255,255,255,0.8);
-}
-
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.full-width {
-    width: 100%;
-    margin-top: 15px;
-}
-
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
-    will-change: opacity, transform;
-}
-
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ==========================================================================
-   МОДАЛЬНОЕ ОКНО ЖЮРИ (Оптимизировано)
-   ==========================================================================
-*/
-
-.jury-modal-content {
-    width: 85%;
-    max-width: 400px;
-    padding: 0;
-    overflow: hidden; 
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    border-radius: 25px;
-    /* Упрощенная тень для производительности */
-    box-shadow: 0 10px 40px rgba(0,0,0,0.25); 
-    animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    max-height: 90vh;
-    contain: content;
-}
-
-.jury-modal-body {
-    display: flex;
-    flex-direction: column;
-    height: auto; 
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.jury-modal-img-container {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    flex-shrink: 0;
-    position: relative;
-    background-color: #eee;
-    margin: 0;
-    border-radius: 0;
-}
-
-.jury-modal-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
-}
-
-.jury-modal-text {
-    width: 100%;
-    padding: 25px 20px;
-    overflow: visible;
-}
-
-.jury-modal-text h2, 
-.jury-modal-text p#juryModalRole {
-    text-align: center;
-}
-
-.jury-bio-scroll {
-    overflow: visible;
-    text-align: justify;
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
-    text-align-last: left; 
-}
-
-.close-jury-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    color: white;
-    background: rgba(0,0,0,0.3);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    font-size: 1.8rem;
-    cursor: pointer;
-    z-index: 20;
-    border: none;
 }
 
 /* 2. СТИЛИ ДЛЯ ПК */
