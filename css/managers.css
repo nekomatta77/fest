@@ -7,7 +7,8 @@
     padding-left: 5%;
     padding-right: 5%;
     min-height: 100vh;
-    background-color: var(--bg-page);
+    /* ИСПРАВЛЕНО: Убран сплошной цвет фона, чтобы был виден глобальный фон (шум, градиенты) */
+    background-color: transparent; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +42,8 @@
     border: 1px solid rgba(110, 133, 183, 0.15);
     
     /* Размеры карточки */
-    flex: 1 1 300px; /* Растет и сжимается, базис 300px */
+    /* Базис 300px позволяет карточкам красиво заполнять ряд */
+    flex: 1 1 300px; 
     max-width: 360px; /* Не даем карточке стать гигантской */
     min-width: 280px; /* Не даем сжаться слишком сильно */
     
@@ -169,14 +171,15 @@
 
 /* --- Адаптивность --- */
 
-/* Планшеты (меньше 2 колонок) */
+/* Планшеты */
 @media (max-width: 900px) {
     .managers-list {
         gap: 20px;
     }
-    .manager-card {
-        max-width: 45%; /* Две колонки */
-    }
+    
+    /* ИСПРАВЛЕНО: Удалено правило max-width: 45%. 
+       Оно конфликтовало с min-width на экранах ~600px-700px.
+       Теперь flex-basis (300px) сам решит, когда переносить строки. */
 }
 
 /* Мобильные устройства */
@@ -194,15 +197,16 @@
     }
 
     .managers-list {
-        flex-direction: column; /* Строго одна колонка */
-        align-items: center;
+        /* Оставляем естественное поведение flex-wrap, 
+           но центрирование помогает визуально */
+        justify-content: center;
         margin-top: 30px;
     }
 
     .manager-card {
         width: 100%;
         max-width: 380px; /* Чуть шире на мобильных для красоты */
-        min-width: 0;
+        min-width: 0; /* Разрешаем сжиматься, если экран совсем узкий */
         margin-bottom: 10px;
     }
 
