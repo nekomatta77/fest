@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullGrid = document.getElementById('fullGalleryGrid');
     const openGalleryBtn = document.getElementById('openGalleryBtn');
 
-    const maxPhotosToCheck = 30; 
+    const maxPhotosToCheck = 27; 
     let photosLoadedCount = 0;
 
     function createImgElement(index, className) {
