@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
             role: "Хореограф, танцовщик",
             img: "assets/actors/Sachkov.png",
             bio: "Преподаватель-исследователь современного танца программы бакалавриата «Искусство современного танца» Санкт-Петербургской Государственной консерватории имени Н.А.Римского-Корсакова, Академии Русского балета имени А. Я. Вагановой. Приглашенный педагог танцевальной труппы MA Dance — MusicAeterna при фонде Теодора Курентзиса. Санкт-Петербург.",
-            // Смещение фото: показываем верхнюю часть изображения (20% от верха), 
-            // чтобы лицо было выше и не обрезалось
             customPosition: "center 20%" 
         },
         {
@@ -148,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.classList.add('jury-card');
         
-        // Генерируем стиль для смещения фото, если оно задано
         const imgStyle = actor.customPosition ? `style="object-position: ${actor.customPosition};"` : '';
         
         card.innerHTML = `
@@ -169,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (juryTrack) {
-        // Очищаем трек на всякий случай
         juryTrack.innerHTML = '';
         
         const fragment = document.createDocumentFragment();
@@ -179,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         juryTrack.appendChild(fragment);
     }
 
-    // --- 4. ЛОГИКА МОДАЛЬНОГО ОКНА ---
+    // --- 4. ЛОГИКА МОДАЛЬНОГО ОКНА (С ОПТИМИЗАЦИЕЙ) ---
     function openJuryModal(actor) {
         jName.innerText = actor.name;
         jRole.innerText = actor.role;
@@ -189,14 +185,26 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => {
             juryModal.classList.add('active');
             juryModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            
+            // Используем общую функцию из main.js
+            if (typeof window.toggleScrollLock === 'function') {
+                window.toggleScrollLock(true);
+            } else {
+                document.body.classList.add('lock-scroll');
+            }
         });
     }
 
     function closeJuryModalFunc() {
         juryModal.style.display = 'none';
         juryModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        
+        // Снимаем блокировку через общую функцию
+        if (typeof window.toggleScrollLock === 'function') {
+            window.toggleScrollLock(false);
+        } else {
+            document.body.classList.remove('lock-scroll');
+        }
     }
 
     if (closeJuryBtn) {

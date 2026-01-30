@@ -1,64 +1,78 @@
-/* managers.css - Стили для страницы Оргкомитета */
+/* --- Стили для страницы Организационного комитета --- */
 
+/* Секция с учетом фиксированной шапки */
 .managers-page-section {
-    padding-top: 150px; /* Отступ от фиксированной шапки */
-    min-height: 80vh;   /* Чтобы футер не прилипал, если контента мало */
+    padding-top: 140px; /* Отступ сверху для шапки */
     padding-bottom: 80px;
-}
-
-/* Выделение активной ссылки в меню */
-.active-link {
-    color: var(--primary) !important;
-    font-weight: 700 !important;
-    position: relative;
-}
-
-.active-link::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--primary);
-    border-radius: 2px;
-}
-
-.managers-list {
+    padding-left: 5%;
+    padding-right: 5%;
+    min-height: 100vh;
+    background-color: var(--bg-page);
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    max-width: 900px;
+    align-items: center;
+}
+
+/* Контейнер (дублирует логику, если глобальный .container отсутствует или перебит) */
+.managers-page-section .container {
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
-.manager-card {
+/* Список менеджеров - Flexbox для лучшего центрирования */
+.managers-list {
     display: flex;
-    align-items: center; /* Центрирование по вертикали */
-    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center; /* Центрируем карточки в ряду */
+    gap: 30px; /* Отступы между карточками */
+    margin-top: 50px;
+    width: 100%;
+}
+
+/* Карточка менеджера */
+.manager-card {
     background: #ffffff;
-    padding: 40px;
-    border-radius: 30px;
-    box-shadow: 0 10px 40px rgba(110, 133, 183, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 35px 25px;
+    
+    /* Тень и рамка */
+    box-shadow: 0 10px 30px rgba(110, 133, 183, 0.1);
+    border: 1px solid rgba(110, 133, 183, 0.15);
+    
+    /* Размеры карточки */
+    flex: 1 1 300px; /* Растет и сжимается, базис 300px */
+    max-width: 360px; /* Не даем карточке стать гигантской */
+    min-width: 280px; /* Не даем сжаться слишком сильно */
+    
+    /* Внутреннее выравнивание */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .manager-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 50px rgba(110, 133, 183, 0.15);
+    transform: translateY(-7px);
+    box-shadow: 0 15px 45px rgba(110, 133, 183, 0.2);
+    border-color: var(--primary-light);
 }
 
-/* Круглый аватар */
+/* Аватар */
 .manager-avatar-wrapper {
-    flex-shrink: 0;
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     overflow: hidden;
-    border: 5px solid white;
-    box-shadow: 0 10px 25px rgba(110, 133, 183, 0.2);
-    background-color: #f0f0f0;
+    margin-bottom: 25px;
+    border: 3px solid var(--primary-light);
+    background-color: #f0f4f8; /* Фон на случай если картинка грузится */
+    flex-shrink: 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 .manager-img {
@@ -66,120 +80,134 @@
     height: 100%;
     object-fit: cover;
     object-position: top center;
-    transition: transform 0.5s ease;
-}
-
-.manager-card:hover .manager-img {
-    transform: scale(1.05);
 }
 
 /* Информация */
 .manager-info {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
 
 .manager-name {
-    font-family: var(--font-serif);
-    font-size: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
     color: var(--text-main);
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     line-height: 1.2;
 }
 
 .manager-role {
-    display: block;
+    font-size: 0.85rem;
     color: var(--primary);
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 20px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    min-height: 1.2em;
 }
 
 .manager-bio {
-    color: var(--text-muted);
-    margin-bottom: 25px;
+    font-size: 0.95rem;
+    color: #666;
     line-height: 1.6;
+    margin-bottom: 30px;
+    flex-grow: 1; /* Текст занимает свободное пространство, прижимая кнопки вниз */
 }
 
 /* Кнопки контактов */
 .manager-contacts {
     display: flex;
-    gap: 15px;
+    justify-content: center;
+    gap: 12px;
+    margin-top: auto;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .contact-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 45px;
-    border-radius: 50px;
-    transition: all 0.3s ease;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #f4f7fa;
+    color: var(--primary);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-size: 1.1rem;
     text-decoration: none;
-    font-weight: 600;
+    border: 1px solid transparent;
 }
 
-/* Кнопка телефона (большая) */
+/* Кнопка телефона (широкая) */
 .contact-btn.phone {
-    background: var(--bg-page);
-    color: var(--text-main);
-    padding: 0 25px;
-    gap: 10px;
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.contact-btn.phone:hover {
-    background: var(--primary);
-    color: white;
-}
-
-/* Кнопки соцсетей (круглые) */
-.contact-btn.telegram, .contact-btn.vk {
-    width: 45px;
-    color: white;
-    font-size: 1.2rem;
-}
-
-.contact-btn.telegram {
-    background: #0088cc; /* Цвет Telegram */
-    box-shadow: 0 5px 15px rgba(0, 136, 204, 0.3);
-}
-
-.contact-btn.vk {
-    background: #0077ff; /* Цвет VK */
-    box-shadow: 0 5px 15px rgba(0, 119, 255, 0.3);
+    width: auto;
+    padding: 0 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .contact-btn:hover {
-    transform: translateY(-3px);
-    filter: brightness(1.1);
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(110, 133, 183, 0.3);
 }
 
-/* --- АДАПТИВ (Мобильные) --- */
-@media (max-width: 768px) {
+/* Акцент для заголовка на странице менеджеров */
+.section-title {
+    position: relative;
+    display: inline-block;
+    z-index: 2;
+}
+
+/* --- Адаптивность --- */
+
+/* Планшеты (меньше 2 колонок) */
+@media (max-width: 900px) {
+    .managers-list {
+        gap: 20px;
+    }
+    .manager-card {
+        max-width: 45%; /* Две колонки */
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 600px) {
     .managers-page-section {
-        padding-top: 120px;
+        padding-top: 110px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .managers-list {
+        flex-direction: column; /* Строго одна колонка */
+        align-items: center;
+        margin-top: 30px;
     }
 
     .manager-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 30px 20px;
-        gap: 25px;
+        width: 100%;
+        max-width: 380px; /* Чуть шире на мобильных для красоты */
+        min-width: 0;
+        margin-bottom: 10px;
     }
 
     .manager-avatar-wrapper {
-        width: 160px;
-        height: 160px;
-        margin: 0 auto;
-    }
-
-    .manager-contacts {
-        justify-content: center;
-    }
-    
-    .contact-btn.phone {
-        width: 100%;
+        width: 120px;
+        height: 120px;
     }
 }

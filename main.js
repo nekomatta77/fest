@@ -2,14 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
     
-    // Блокировка скролла (использует класс из CSS)
-    function toggleScrollLock(isLocked) {
+    // Глобальная функция блокировки скролла (доступна для jury.js)
+    window.toggleScrollLock = function(isLocked) {
         if (isLocked) {
             document.body.classList.add('lock-scroll');
         } else {
             document.body.classList.remove('lock-scroll');
         }
-    }
+    };
 
     // --- 1. АНИМАЦИЯ ПОЯВЛЕНИЯ ---
     const observer = new IntersectionObserver((entries) => {
@@ -31,16 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-links a');
 
     function toggleMenu() {
-        // Переключаем классы активности
         nav.classList.toggle('nav-active');
         burger.classList.toggle('toggle');
         overlay.classList.toggle('active'); 
         
-        // Проверяем, открыто меню или закрыто, и блокируем скролл
         if (nav.classList.contains('nav-active')) {
-            toggleScrollLock(true);
+            window.toggleScrollLock(true);
         } else {
-            toggleScrollLock(false);
+            window.toggleScrollLock(false);
         }
     }
 
@@ -48,14 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
         burger.addEventListener('click', toggleMenu);
     }
     
-    // Закрытие при клике на затемненный фон
     if (overlay) {
         overlay.addEventListener('click', () => {
             if(nav.classList.contains('nav-active')) toggleMenu();
         });
     }
     
-    // Закрытие при клике на ссылку
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if(nav.classList.contains('nav-active')) toggleMenu();
@@ -67,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
-            // Проверка, что цель существует
             const targetEl = document.querySelector(targetId);
             if (targetId !== '#' && targetEl) {
                 e.preventDefault();
@@ -87,12 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.requestAnimationFrame(() => {
                 const scrolled = window.scrollY;
 
-                // Параллакс только для десктопа
                 if (window.innerWidth > 768 && heroContent) {
                     heroContent.style.transform = `translate3d(0, ${scrolled * 0.4}px, 0)`;
                 }
 
-                // Смена стиля шапки
                 if (scrolled > 50) {
                     navbar.classList.add('scrolled');
                 } else {
@@ -115,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const successContainer = document.getElementById('modalSuccessContainer');
     const submitBtn = document.getElementById('submitBtn');
 
-    // Поля ввода
     const nameInput = document.getElementById('name');
     const phoneInput = document.getElementById('phone');
     const emailInput = document.getElementById('email');
@@ -126,19 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
         formContainer.style.display = 'block';
         successContainer.style.display = 'none';
         
-        // Сброс формы и кнопки
         if (ticketForm) {
             ticketForm.reset();
             resetValidationStyles();
             toggleSubmitButton(false);
         }
-        toggleScrollLock(true);
+        window.toggleScrollLock(true);
     }
 
     function closeTicketModal() {
         if (!ticketModal) return;
         ticketModal.style.display = 'none';
-        toggleScrollLock(false);
+        window.toggleScrollLock(false);
     }
 
     // -- МАСКА ТЕЛЕФОНА --
@@ -151,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (def.length >= val.length) val = def;
         
         el.value = matrix(pattern, def, val);
-        
         validateForm();
     }
 
@@ -180,7 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function validateForm() {
         const nameValid = nameInput.value.trim().length > 1;
         const phoneRaw = phoneInput.value.replace(/\D/g, "");
-        const phoneValid = phoneRaw.length >= 11; 
+        // Смягченная валидация: разрешаем номера от 10 цифр
+        const phoneValid = phoneRaw.length >= 10; 
         const emailValid = validateEmail(emailInput.value);
 
         setInputStatus(nameInput, nameValid);
@@ -252,14 +243,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- 6. ГАЛЕРЕЯ (Изолированная загрузка) ---
+    // --- 6. ГАЛЕРЕЯ (ОПТИМИЗИРОВАННАЯ) ---
     const galleryPath = 'assets/galery/';
     const track = document.getElementById('galleryTrack');
     const fullGrid = document.getElementById('fullGalleryGrid');
     const openGalleryBtn = document.getElementById('openGalleryBtn');
-
-    const maxPhotosToCheck = 27; 
-    let photosLoadedCount = 0;
 
     function createImgElement(index, className) {
         const imgEl = document.createElement('img');
@@ -268,27 +256,33 @@ document.addEventListener('DOMContentLoaded', () => {
         imgEl.classList.add(className);
         imgEl.loading = "lazy";
         imgEl.ondragstart = () => false;
+        
+        // Если фото нет, просто скрываем элемент без ошибок в консоли
+        imgEl.onerror = function() {
+            this.style.display = 'none';
+        };
         return imgEl;
     }
 
-    for (let i = 1; i <= maxPhotosToCheck; i++) {
-        const img = new Image();
-        img.src = `${galleryPath}photo${i}.png`;
-        
-        img.onload = () => {
-            photosLoadedCount++;
-            if(track && i <= 10) {
-                track.appendChild(createImgElement(i, 'gallery-img-thumb'));
+    // Загружаем только первые 10 для главной страницы
+    if(track) {
+        for (let i = 1; i <= 10; i++) {
+            track.appendChild(createImgElement(i, 'gallery-img-thumb'));
+        }
+    }
+
+    // Остальные подгружаем только при открытии модалки
+    let galleryLoaded = false;
+    if(openGalleryBtn) {
+        openGalleryBtn.innerText = "Смотреть все фото";
+        openGalleryBtn.addEventListener('click', () => {
+             if(!galleryLoaded && fullGrid) {
+                for (let i = 1; i <= 27; i++) {
+                    fullGrid.appendChild(createImgElement(i, 'gallery-grid-img'));
+                }
+                galleryLoaded = true;
             }
-            if(fullGrid) {
-                fullGrid.appendChild(createImgElement(i, 'gallery-grid-img'));
-            }
-            if(openGalleryBtn) {
-                openGalleryBtn.innerText = `Смотреть фото (${photosLoadedCount})`;
-            }
-        };
-        // Ошибки игнорируем
-        img.onerror = () => {};
+        });
     }
 
 
@@ -300,21 +294,21 @@ document.addEventListener('DOMContentLoaded', () => {
         openGalleryBtn.addEventListener('click', (e) => {
             e.preventDefault();
             galleryModal.style.display = 'flex';
-            toggleScrollLock(true);
+            window.toggleScrollLock(true);
         });
     }
 
     if(closeGalleryBtn && galleryModal) {
         closeGalleryBtn.addEventListener('click', () => {
             galleryModal.style.display = 'none';
-            toggleScrollLock(false);
+            window.toggleScrollLock(false);
         });
     }
 
     window.addEventListener('click', (e) => {
         if (e.target == galleryModal) {
             galleryModal.style.display = 'none';
-            toggleScrollLock(false);
+            window.toggleScrollLock(false);
         }
     });
 
@@ -331,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lightboxImg.src = src;
         lightbox.classList.add('active');
         lightbox.style.display = 'flex';
-        toggleScrollLock(true);
+        window.toggleScrollLock(true);
         resetState();
     }
 
@@ -341,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             lightbox.style.display = 'none';
         }, 300);
-        toggleScrollLock(false);
+        window.toggleScrollLock(false);
     }
 
     function resetState() {
@@ -366,7 +360,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if(closeLightbox) closeLightbox.addEventListener('click', closeLightboxFunc);
 
-    // Логика зума и панорамирования (без изменений, просто свернута для краткости)
     function constrainState() {
         if (!lightboxImg) return;
         if (state.scale <= 1.05) {
@@ -474,8 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const aboutText = document.getElementById('aboutText');
 
     const aboutData = {
-        1: { title: "Честное судейство", text: "Наши эксперты серьёзно относятся к конкурсной программе..." },
-        2: { title: "Круглые столы", text: "Мы предоставляем для наших руководителей возможность побеседовать..." },
+        1: { title: "Честное судейство", text: "Наши эксперты серьёзно относятся к конкурсной программе, поэтому не раздают призовые места просто так." },
+        2: { title: "Круглые столы", text: "Мы предоставляем для наших руководителей возможность побеседовать с членами жюри." },
         3: { title: "Четкий тайминг", text: "Мы готовим программу подсчитывая каждый час, минуту, секунду..." }
     };
 
@@ -484,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             if(aboutModal) {
                 aboutModal.style.display = 'flex';
-                toggleScrollLock(true);
+                window.toggleScrollLock(true);
             }
         });
     }
@@ -493,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeAboutBtn.addEventListener('click', () => {
             if(aboutModal) {
                 aboutModal.style.display = 'none';
-                toggleScrollLock(false);
+                window.toggleScrollLock(false);
             }
         });
     }
@@ -501,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', (e) => {
         if (e.target == aboutModal) {
             aboutModal.style.display = 'none';
-            toggleScrollLock(false);
+            window.toggleScrollLock(false);
         }
     });
 
@@ -540,11 +533,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ticketModal && ticketModal.style.display === 'flex') closeTicketModal();
             if (galleryModal && galleryModal.style.display === 'flex') {
                 galleryModal.style.display = 'none';
-                toggleScrollLock(false);
+                window.toggleScrollLock(false);
             }
             if (aboutModal && aboutModal.style.display === 'flex') {
                 aboutModal.style.display = 'none';
-                toggleScrollLock(false);
+                window.toggleScrollLock(false);
             }
             if (lightbox && lightbox.classList.contains('active')) closeLightboxFunc();
             if (nav && nav.classList.contains('nav-active')) toggleMenu();
@@ -552,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 12. АНИМАЦИЯ ЧАСТИЦ (ИСПРАВЛЕНО) ---
+    // --- 12. АНИМАЦИЯ ЧАСТИЦ ---
     const particleContainer = document.getElementById('particleContainer');
     const phrases = ["без границ", "вдохновлять", "объединять", "жить", "творить"];
     let phraseIndex = 0;
