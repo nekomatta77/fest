@@ -1,0 +1,142 @@
+/* css/jury-scroller.css */
+
+/* --- Стили контейнера и трека скроллера --- */
+.compact-title-jury {
+    margin-bottom: 25px !important;
+}
+
+.jury-scroller-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 20px 0;
+}
+
+.jury-track {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    
+    /* Отступы для комфортного скролла */
+    padding: 40px 5%;
+    
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    
+    /* Тонкий скроллбар */
+    scrollbar-width: thin; 
+    scrollbar-color: var(--primary-light) transparent;
+}
+
+/* Стилизация скроллбара для Webkit */
+.jury-track::-webkit-scrollbar {
+    height: 8px;
+    display: block;
+}
+.jury-track::-webkit-scrollbar-track {
+    background: rgba(178, 200, 223, 0.2);
+    border-radius: 4px;
+}
+.jury-track::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+/* --- НОВЫЙ ДИЗАЙН КАРТОЧЕК (Круглые) --- */
+
+.jury-card {
+    min-width: 200px;
+    width: 200px;
+    background: transparent; /* Убрали белый фон */
+    border-radius: 0;
+    box-shadow: none;        /* Убрали тень карточки */
+    scroll-snap-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    
+    /* Оптимизация анимации */
+    will-change: transform; 
+    transform: translateZ(0); 
+    backface-visibility: hidden;
+    
+    -webkit-font-smoothing: subpixel-antialiased;
+    contain: paint layout;
+}
+
+/* Эффект наведения на всю карточку */
+.jury-card:hover {
+    transform: translateY(-10px); /* Легкое всплытие */
+    z-index: 5;
+}
+
+/* Круглый контейнер для фото */
+.jury-img-container {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;     /* Делаем круг */
+    margin: 0 auto;         /* Центрируем */
+    overflow: hidden;
+    background: #f0f0f0;
+    
+    /* Белая рамка и тень для круга */
+    border: 5px solid white; 
+    box-shadow: 0 10px 25px rgba(110, 133, 183, 0.25);
+    
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    
+    /* Сброс старых свойств */
+    aspect-ratio: auto;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Подсветка рамки при наведении */
+.jury-card:hover .jury-img-container {
+    border-color: var(--primary);
+    box-shadow: 0 15px 35px rgba(110, 133, 183, 0.4);
+}
+
+.jury-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    object-position: top center;
+    backface-visibility: hidden; 
+    will-change: transform;
+}
+
+/* Зум фото внутри круга */
+.jury-card:hover .jury-img-container img {
+    transform: scale(1.1);
+}
+
+/* Текстовый блок под фото */
+.jury-info {
+    padding: 20px 5px 0 5px;
+    text-align: center;      /* Текст по центру */
+    background: transparent;
+}
+
+.jury-info h3 {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.jury-info p {
+    font-size: 0.85rem;
+    color: var(--primary);   /* Акцентный цвет для роли */
+    font-weight: 500;
+}
+
+/* --- Адаптив для мобильных --- */
+@media (max-width: 768px) {
+    .jury-track {
+        /* Центрирование первого элемента на мобильных */
+        padding: 40px max(20px, calc(50% - 100px)); 
+    }
+}
