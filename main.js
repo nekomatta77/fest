@@ -202,7 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1 -> 2
     if(nextBtn1) {
         nextBtn1.addEventListener('click', () => {
-            const requiredStep1 = ['festDate', 'groupName', 'city', 'director', 'phone', 'email', 'participants', 'manager'];
+            // УБРАЛ 'email' ИЗ СПИСКА ОБЯЗАТЕЛЬНЫХ ПОЛЕЙ
+            const requiredStep1 = ['festDate', 'groupName', 'city', 'director', 'phone', 'participants', 'manager'];
             let isValid = true;
             requiredStep1.forEach(id => {
                 const el = document.getElementById(id);
