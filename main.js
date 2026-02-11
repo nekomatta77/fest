@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // --- 0. НАСТРОЙКИ ОТПРАВКИ ---
+    // ВАША ПРАВИЛЬНАЯ ССЫЛКА НА СКРИПТ:
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzq1bKz5jrF1gylXeJF45EG9ER9XULITGrMweJgIllgT7kBaSX1lkStuPtftIQIb9OUlg/exec'; 
+
+
     // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
-    
-    // Глобальная функция блокировки скролла (доступна для jury.js)
     window.toggleScrollLock = function(isLocked) {
         if (isLocked) {
             document.body.classList.add('lock-scroll');
@@ -72,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 4. ОПТИМИЗИРОВАННЫЙ СКРОЛЛ (HEADER + PARALLAX) ---
+    // --- 4. ОПТИМИЗИРОВАННЫЙ СКРОЛЛ (HEADER) ---
     const heroContent = document.querySelector('.hero-content');
     const navbar = document.querySelector('.navbar');
     let isWindowScrolling = false;
@@ -99,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 5. УМНАЯ ФОРМА БИЛЕТОВ (Validation + Mask) ---
+    // --- 5. ОБРАБОТКА БОЛЬШОЙ АНКЕТЫ ---
     const ticketModal = document.getElementById('ticketModal');
     const openBtns = document.querySelectorAll('.open-modal-btn');
     const closeBtns = document.querySelectorAll('.close-btn, .close-modal-action');
@@ -108,10 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const successContainer = document.getElementById('modalSuccessContainer');
     const submitBtn = document.getElementById('submitBtn');
 
-    const nameInput = document.getElementById('name');
-    const phoneInput = document.getElementById('phone');
-    const emailInput = document.getElementById('email');
-
+    // Открытие/закрытие модалки
     function openTicketModal() {
         if (!ticketModal) return;
         ticketModal.style.display = 'flex';
@@ -119,9 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
         successContainer.style.display = 'none';
         
         if (ticketForm) {
+            // Сброс формы при открытии
             ticketForm.reset();
             resetValidationStyles();
-            toggleSubmitButton(false);
+            if(submitBtn) {
+                submitBtn.removeAttribute('disabled');
+                submitBtn.innerText = 'Отправить заявку';
+                submitBtn.style.opacity = '1';
+            }
         }
         window.toggleScrollLock(true);
     }
@@ -132,17 +137,38 @@ document.addEventListener('DOMContentLoaded', () => {
         window.toggleScrollLock(false);
     }
 
-    // -- МАСКА ТЕЛЕФОНА --
+    openBtns.forEach(btn => btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openTicketModal();
+    }));
+
+    closeBtns.forEach(btn => btn.addEventListener('click', closeTicketModal));
+    
+    window.addEventListener('click', (e) => {
+        if (e.target == ticketModal) closeTicketModal();
+    });
+
+
+    // Маска для телефона
+    const phoneInput = document.getElementById('phone');
+    if(phoneInput) {
+        phoneInput.addEventListener('input', handlePhoneMask);
+        phoneInput.addEventListener('focus', handlePhoneMask);
+        phoneInput.addEventListener('blur', handlePhoneMask);
+    }
+
     function handlePhoneMask(e) {
         let el = e.target;
         let pattern = el.getAttribute('placeholder');
+        // Если плейсхолдер не содержит маску (например, там текст), ставим стандартную
+        if(!pattern || !pattern.includes('(')) pattern = "+7 (___) ___-__-__";
+        
         let def = "7"; 
         let val = el.value.replace(/\D/g, "");
         
         if (def.length >= val.length) val = def;
         
         el.value = matrix(pattern, def, val);
-        validateForm();
     }
 
     function matrix(pattern, def, val) {
@@ -156,94 +182,92 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if(phoneInput) {
-        phoneInput.addEventListener('input', handlePhoneMask);
-        phoneInput.addEventListener('focus', handlePhoneMask);
-        phoneInput.addEventListener('blur', handlePhoneMask);
-    }
-
-    // -- ВАЛИДАЦИЯ --
-    function validateEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    function validateForm() {
-        const nameValid = nameInput.value.trim().length > 1;
-        const phoneRaw = phoneInput.value.replace(/\D/g, "");
-        // Смягченная валидация: разрешаем номера от 10 цифр
-        const phoneValid = phoneRaw.length >= 10; 
-        const emailValid = validateEmail(emailInput.value);
-
-        setInputStatus(nameInput, nameValid);
-        setInputStatus(phoneInput, phoneValid);
-        setInputStatus(emailInput, emailValid);
-
-        toggleSubmitButton(nameValid && phoneValid && emailValid);
-    }
-
-    function setInputStatus(input, isValid) {
-        if(input.value.length === 0) {
-            input.style.borderColor = '#e0e0e0';
-            input.style.boxShadow = 'none';
-            return;
-        }
-        input.style.borderColor = isValid ? '#4caf50' : '#ff4d4d';
-        input.style.boxShadow = isValid ? 'none' : '0 0 5px rgba(255, 77, 77, 0.2)';
-    }
-
     function resetValidationStyles() {
-        [nameInput, phoneInput, emailInput].forEach(inp => {
-            if(inp) {
-                inp.style.borderColor = '#e0e0e0';
-                inp.style.boxShadow = 'none';
-            }
+        const inputs = ticketForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(inp => {
+            inp.style.borderColor = '#e0e0e0';
         });
     }
 
-    function toggleSubmitButton(isValid) {
-        if (!submitBtn) return;
-        if (isValid) {
-            submitBtn.removeAttribute('disabled');
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-            submitBtn.innerText = 'Оплатить';
-        } else {
-            submitBtn.setAttribute('disabled', 'true');
-            submitBtn.style.opacity = '0.6';
-            submitBtn.style.cursor = 'not-allowed';
-            submitBtn.innerText = 'Заполните поля';
-        }
-    }
 
-    if(nameInput) nameInput.addEventListener('input', validateForm);
-    if(emailInput) emailInput.addEventListener('input', validateForm);
-
-    openBtns.forEach(btn => btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openTicketModal();
-    }));
-
-    closeBtns.forEach(btn => btn.addEventListener('click', closeTicketModal));
-    
-    window.addEventListener('click', (e) => {
-        if (e.target == ticketModal) closeTicketModal();
-    });
-
+    // ЛОГИКА ОТПРАВКИ В GOOGLE
     if (ticketForm) {
         ticketForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            
+            // 1. Проверка обязательных полей (ID тех полей, где стоит *)
+            const requiredIds = ['festDate', 'groupName', 'city', 'director', 'phone', 'email', 'participants', 'manager'];
+            let isValid = true;
+            
+            requiredIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.value.trim()) {
+                    el.style.borderColor = 'red';
+                    isValid = false;
+                } else if (el) {
+                    el.style.borderColor = '#4caf50'; // Зеленый, если заполнено
+                }
+            });
+
+            if (!isValid) {
+                alert('Пожалуйста, заполните все обязательные поля (отмечены *)');
+                // Прокрутим форму к первому незаполненному полю
+                const firstInvalid = ticketForm.querySelector('input[style*="border-color: red"], textarea[style*="border-color: red"], select[style*="border-color: red"]');
+                if(firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // 2. Блокировка кнопки
             const originalText = submitBtn.innerText;
-            submitBtn.innerText = 'Обработка...';
-            setTimeout(() => {
+            submitBtn.innerText = 'Отправка...';
+            submitBtn.setAttribute('disabled', 'true');
+            submitBtn.style.opacity = '0.6';
+
+            // 3. Сбор данных
+            const formData = {
+                festDate: document.getElementById('festDate').value,
+                groupName: document.getElementById('groupName').value,
+                city: document.getElementById('city').value,
+                director: document.getElementById('director').value,
+                teacher: document.getElementById('teacher').value,
+                tutor: document.getElementById('tutor').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                socials: document.getElementById('socials').value,
+                participants: document.getElementById('participants').value,
+                accompanying: document.getElementById('accompanying').value,
+                manager: document.getElementById('manager').value,
+                grant: document.getElementById('grant').value
+            };
+
+            // 4. Отправка Fetch
+            // Важно: mode: 'no-cors' нужен для отправки данных в Google Script
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                // Успешная отправка
                 submitBtn.innerText = originalText;
                 formContainer.style.display = 'none';
                 successContainer.style.display = 'block';
-            }, 1500);
+                ticketForm.reset();
+                resetValidationStyles();
+            })
+            .catch(error => {
+                console.error('Ошибка!', error);
+                alert('Произошла ошибка при отправке. Попробуйте позже.');
+                submitBtn.innerText = originalText;
+                submitBtn.removeAttribute('disabled');
+                submitBtn.style.opacity = '1';
+            });
         });
     }
 
 
-    // --- 6. ГАЛЕРЕЯ (ОПТИМИЗИРОВАННАЯ) ---
+    // --- 6. ГАЛЕРЕЯ ---
     const galleryPath = 'assets/galery/';
     const track = document.getElementById('galleryTrack');
     const fullGrid = document.getElementById('fullGalleryGrid');
@@ -257,21 +281,18 @@ document.addEventListener('DOMContentLoaded', () => {
         imgEl.loading = "lazy";
         imgEl.ondragstart = () => false;
         
-        // Если фото нет, просто скрываем элемент без ошибок в консоли
         imgEl.onerror = function() {
             this.style.display = 'none';
         };
         return imgEl;
     }
 
-    // Загружаем только первые 10 для главной страницы
     if(track) {
         for (let i = 1; i <= 10; i++) {
             track.appendChild(createImgElement(i, 'gallery-img-thumb'));
         }
     }
 
-    // Остальные подгружаем только при открытии модалки
     let galleryLoaded = false;
     if(openGalleryBtn) {
         openGalleryBtn.innerText = "Смотреть все фото";

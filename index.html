@@ -19,6 +19,50 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .form-label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 10px;
+        }
+        /* Стиль для красной звездочки */
+        .red-star {
+            color: red;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            resize: vertical;
+            font-size: 1rem;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        /* Стили для скролла внутри модалки */
+        #ticketForm::-webkit-scrollbar {
+            width: 6px;
+        }
+        #ticketForm::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        #ticketForm::-webkit-scrollbar-thumb {
+            background: #ccc; 
+            border-radius: 3px;
+        }
+        #ticketForm::-webkit-scrollbar-thumb:hover {
+            background: #aaa; 
+        }
+    </style>
 </head>
 <body>
 
@@ -35,7 +79,7 @@
             <li style="--i:3;"><a href="#gallery">Галерея</a></li>
             <li style="--i:4;"><a href="#jury">Жюри</a></li>
             <li style="--i:5;"><a href="managers.html">Оргкомитет</a></li>
-            <li style="--i:6;"><a href="#" class="btn-nav open-modal-btn">Купить билет</a></li>
+            <li style="--i:6;"><a href="#" class="btn-nav open-modal-btn">Заполнить анкету</a></li>
         </ul>
         <div class="burger" aria-label="Меню" role="button" tabindex="0">
             <div class="line1"></div>
@@ -135,7 +179,7 @@
         <div class="container">
             <h2>Стань частью <span class="italic-accent-dark">вдохновения</span></h2>
             <p>Москва, Парк Останкино | 25-27 Июля</p>
-            <a href="#" class="btn-primary open-modal-btn">Забронировать место</a>
+            <a href="#" class="btn-primary open-modal-btn">Подать заявку</a>
             <div class="socials">
                 <a href="#" aria-label="VK"><i class="fab fa-vk"></i></a>
                 <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
@@ -164,36 +208,92 @@
     <div id="ticketModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
+            
             <div id="modalFormContainer">
-                <h2 style="font-family: 'Playfair Display', serif;">Купить билет</h2>
-                <p style="margin-bottom: 20px; color: var(--text-muted);">Заполните форму, и мы пришлем билет на почту.</p>
-                <form id="ticketForm" novalidate>
+                <h2 style="font-family: 'Playfair Display', serif; text-align: center;">Анкета участника</h2>
+                <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Заполните данные о коллективе</p>
+                
+                <form id="ticketForm" novalidate style="max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+                    
+                    <label class="form-label">Дата проведения фестиваля <span class="red-star">*</span></label>
                     <div class="input-group">
-                        <input type="text" id="name" placeholder="Ваше Имя" autocomplete="off">
-                        <span class="error-msg" id="nameError"></span>
+                        <input type="date" id="festDate" required>
                     </div>
+
+                    <label class="form-label">Полное название коллектива <span class="red-star">*</span></label>
+                    <div class="input-group">
+                        <input type="text" id="groupName" placeholder="Введите название" autocomplete="off">
+                    </div>
+
+                    <label class="form-label">Страна, город <span class="red-star">*</span></label>
+                    <div class="input-group">
+                        <input type="text" id="city" placeholder="Где занимается коллектив" autocomplete="off">
+                    </div>
+
+                    <label class="form-label">Ф.И.О. руководителя <span class="red-star">*</span></label>
+                    <div class="input-group">
+                        <input type="text" id="director" placeholder="Иванов Иван Иванович" autocomplete="off">
+                    </div>
+
+                    <label class="form-label">Ф.И.О. педагога</label>
+                    <div class="input-group">
+                        <input type="text" id="teacher" placeholder="Если есть" autocomplete="off">
+                    </div>
+
+                    <label class="form-label">Ф.И.О. репетитора</label>
+                    <div class="input-group">
+                        <input type="text" id="tutor" placeholder="Если есть" autocomplete="off">
+                    </div>
+
+                    <label class="form-label">Контактный телефон <span class="red-star">*</span></label>
                     <div class="input-group">
                         <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" autocomplete="off">
-                        <span class="error-msg" id="phoneError"></span>
                     </div>
+
+                    <label class="form-label">Email руководителя <span class="red-star">*</span></label>
                     <div class="input-group">
-                        <input type="email" id="email" placeholder="Ваш Email" autocomplete="off">
-                        <span class="error-msg" id="emailError"></span>
+                        <input type="email" id="email" placeholder="example@mail.ru" autocomplete="off">
                     </div>
+
+                    <label class="form-label">Ссылка на соцсети</label>
                     <div class="input-group">
-                        <select id="ticketType">
-                            <option value="standard">Входной билет (1000₽)</option>
-                            <option value="vip">VIP зона (3000₽)</option>
-                            <option value="student">Студенческий (500₽)</option>
+                        <input type="text" id="socials" placeholder="ВКонтакте / Telegram" autocomplete="off">
+                    </div>
+
+                    <label class="form-label">Кол-во участников + возраст <span class="red-star">*</span></label>
+                    <div class="input-group">
+                        <textarea id="participants" rows="3" placeholder="Например:&#10;Беби - 10 чел.&#10;Взрослые - 24 чел."></textarea>
+                    </div>
+
+                    <label class="form-label">Кол-во сопровождающих</label>
+                    <div class="input-group">
+                        <input type="number" id="accompanying" placeholder="Без учета руководителей" autocomplete="off">
+                    </div>
+
+                    <label class="form-label">Ваш менеджер <span class="red-star">*</span></label>
+                    <div class="input-group">
+                        <select id="manager">
+                            <option value="" disabled selected>Выберите менеджера</option>
+                            <option value="Анна">Анна</option>
+                            <option value="Любовь">Любовь</option>
+                            <option value="Светлана">Светлана</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-primary full-width" id="submitBtn" disabled style="opacity: 0.6; cursor: not-allowed;">Заполните поля</button>
+
+                    <label class="form-label">Грантовый сертификат</label>
+                    <div class="input-group">
+                        <input type="text" id="grant" placeholder="Сумма сертификата (если есть)" autocomplete="off">
+                        <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">* Фото сертификата отправьте лично менеджеру</p>
+                    </div>
+
+                    <button type="submit" class="btn-primary full-width" id="submitBtn" style="margin-top: 20px;">Отправить заявку</button>
                 </form>
             </div>
+            
             <div id="modalSuccessContainer" style="display: none; text-align: center;">
                 <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
                 <h2>Спасибо!</h2>
-                <p>Билет отправлен на вашу почту.</p>
+                <p>Ваша анкета успешно отправлена.</p>
                 <button class="btn-secondary close-modal-action" style="margin-top: 20px;">Закрыть</button>
             </div>
         </div>
