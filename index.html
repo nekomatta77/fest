@@ -30,7 +30,6 @@
             color: var(--text-main);
             margin-top: 10px;
         }
-        /* Стиль для красной звездочки */
         .red-star {
             color: red;
             font-weight: bold;
@@ -48,19 +47,55 @@
             outline: none;
             border-color: var(--primary);
         }
-        /* Стили для скролла внутри модалки */
-        #ticketForm::-webkit-scrollbar {
-            width: 6px;
+        #ticketForm::-webkit-scrollbar { width: 6px; }
+        #ticketForm::-webkit-scrollbar-track { background: #f1f1f1; }
+        #ticketForm::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+        /* --- СТИЛИ ДЛЯ ШАГА 2 (КАРТОЧКИ НОМЕРОВ) --- */
+        .perf-card {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        #ticketForm::-webkit-scrollbar-track {
-            background: #f1f1f1; 
+        .perf-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1rem;
         }
-        #ticketForm::-webkit-scrollbar-thumb {
-            background: #ccc; 
-            border-radius: 3px;
+        .perf-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.2s;
         }
-        #ticketForm::-webkit-scrollbar-thumb:hover {
-            background: #aaa; 
+        .perf-remove:hover { transform: scale(1.1); }
+        
+        /* Сетка для полей внутри карточки */
+        .perf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .perf-card input {
+            background: white; 
+            font-size: 0.9rem;
+            padding: 10px;
+        }
+
+        /* Адаптив для карточек */
+        @media (max-width: 480px) {
+            .perf-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -211,89 +246,106 @@
             
             <div id="modalFormContainer">
                 <h2 style="font-family: 'Playfair Display', serif; text-align: center;">Анкета участника</h2>
-                <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Заполните данные о коллективе</p>
                 
-                <form id="ticketForm" novalidate style="max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+                <form id="ticketForm" novalidate style="max-height: 70vh; overflow-y: auto; padding-right: 5px;">
                     
-                    <label class="form-label">Дата проведения фестиваля <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <input type="date" id="festDate" required>
+                    <div id="step1">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 1: Общие данные</p>
+                        
+                        <label class="form-label">Дата проведения фестиваля <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <input type="date" id="festDate" required>
+                        </div>
+
+                        <label class="form-label">Полное название коллектива <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <input type="text" id="groupName" placeholder="Введите название" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Страна, город <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <input type="text" id="city" placeholder="Где занимается коллектив" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Ф.И.О. руководителя <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <input type="text" id="director" placeholder="Иванов Иван Иванович" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Ф.И.О. педагога</label>
+                        <div class="input-group">
+                            <input type="text" id="teacher" placeholder="Если есть" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Ф.И.О. репетитора</label>
+                        <div class="input-group">
+                            <input type="text" id="tutor" placeholder="Если есть" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Контактный телефон <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Email руководителя <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <input type="email" id="email" placeholder="example@mail.ru" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Ссылка на соцсети</label>
+                        <div class="input-group">
+                            <input type="text" id="socials" placeholder="ВКонтакте / Telegram" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Кол-во участников + возраст <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <textarea id="participants" rows="2" placeholder="Например:&#10;Беби - 10 чел.&#10;Взрослые - 24 чел."></textarea>
+                        </div>
+
+                        <label class="form-label">Кол-во сопровождающих</label>
+                        <div class="input-group">
+                            <input type="number" id="accompanying" placeholder="Без учета руководителей" autocomplete="off">
+                        </div>
+
+                        <label class="form-label">Ваш менеджер <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <select id="manager">
+                                <option value="" disabled selected>Выберите менеджера</option>
+                                <option value="Анна">Анна</option>
+                                <option value="Любовь">Любовь</option>
+                                <option value="Светлана">Светлана</option>
+                            </select>
+                        </div>
+
+                        <label class="form-label">Грантовый сертификат</label>
+                        <div class="input-group">
+                            <input type="text" id="grant" placeholder="Сумма сертификата (если есть)" autocomplete="off">
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">* Фото сертификата отправьте лично менеджеру</p>
+                        </div>
+
+                        <button type="button" id="nextBtn" class="btn-primary full-width">Далее (К программе) &rarr;</button>
                     </div>
 
-                    <label class="form-label">Полное название коллектива <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <input type="text" id="groupName" placeholder="Введите название" autocomplete="off">
+                    <div id="step2" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 2: Программа выступлений</p>
+                        
+                        <div id="performancesContainer"></div>
+
+                        <button type="button" id="addPerfBtn" class="btn-secondary full-width" style="border: 1px dashed var(--primary); color: var(--primary); margin-top: 15px;">+ Добавить номер</button>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backBtn" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
+                            <button type="submit" id="submitBtn" class="btn-primary" style="flex: 1; margin: 0;">Отправить заявку</button>
+                        </div>
                     </div>
 
-                    <label class="form-label">Страна, город <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <input type="text" id="city" placeholder="Где занимается коллектив" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Ф.И.О. руководителя <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <input type="text" id="director" placeholder="Иванов Иван Иванович" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Ф.И.О. педагога</label>
-                    <div class="input-group">
-                        <input type="text" id="teacher" placeholder="Если есть" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Ф.И.О. репетитора</label>
-                    <div class="input-group">
-                        <input type="text" id="tutor" placeholder="Если есть" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Контактный телефон <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Email руководителя <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <input type="email" id="email" placeholder="example@mail.ru" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Ссылка на соцсети</label>
-                    <div class="input-group">
-                        <input type="text" id="socials" placeholder="ВКонтакте / Telegram" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Кол-во участников + возраст <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <textarea id="participants" rows="3" placeholder="Например:&#10;Беби - 10 чел.&#10;Взрослые - 24 чел."></textarea>
-                    </div>
-
-                    <label class="form-label">Кол-во сопровождающих</label>
-                    <div class="input-group">
-                        <input type="number" id="accompanying" placeholder="Без учета руководителей" autocomplete="off">
-                    </div>
-
-                    <label class="form-label">Ваш менеджер <span class="red-star">*</span></label>
-                    <div class="input-group">
-                        <select id="manager">
-                            <option value="" disabled selected>Выберите менеджера</option>
-                            <option value="Анна">Анна</option>
-                            <option value="Любовь">Любовь</option>
-                            <option value="Светлана">Светлана</option>
-                        </select>
-                    </div>
-
-                    <label class="form-label">Грантовый сертификат</label>
-                    <div class="input-group">
-                        <input type="text" id="grant" placeholder="Сумма сертификата (если есть)" autocomplete="off">
-                        <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">* Фото сертификата отправьте лично менеджеру</p>
-                    </div>
-
-                    <button type="submit" class="btn-primary full-width" id="submitBtn" style="margin-top: 20px;">Отправить заявку</button>
                 </form>
             </div>
             
             <div id="modalSuccessContainer" style="display: none; text-align: center;">
                 <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
                 <h2>Спасибо!</h2>
-                <p>Ваша анкета успешно отправлена.</p>
+                <p>Ваша анкета и программа успешно отправлены.</p>
                 <button class="btn-secondary close-modal-action" style="margin-top: 20px;">Закрыть</button>
             </div>
         </div>
