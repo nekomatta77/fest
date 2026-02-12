@@ -97,39 +97,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const ticketModal = document.getElementById('ticketModal');
     const ticketForm = document.getElementById('ticketForm');
     
-    // Элементы навигации
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
+    // Переменная состояния: false = местный, true = иногородний
+    let isRemote = false;
+
+    // Шаги
+    const stepSelection = document.getElementById('stepSelection');
+    const step1_local = document.getElementById('step1_local');
+    const step1_remote = document.getElementById('step1_remote');
+    const step2_remote = document.getElementById('step2_remote');
+    const step_program = document.getElementById('step_program');
+    const step_awards = document.getElementById('step_awards');
+
+    // Кнопки выбора
+    const btnSelectLocal = document.getElementById('btnSelectLocal');
+    const btnSelectRemote = document.getElementById('btnSelectRemote');
+
+    // Навигация
+    const backToSel_local = document.getElementById('backToSel_local');
+    const nextBtn1_local = document.getElementById('nextBtn1_local');
     
-    const nextBtn1 = document.getElementById('nextBtn1'); // 1 -> 2
-    const nextBtn2 = document.getElementById('nextBtn2'); // 2 -> 3
-    const backBtn2 = document.getElementById('backBtn2'); // 2 -> 1
-    const backBtn3 = document.getElementById('backBtn3'); // 3 -> 2
+    const backToSel_remote = document.getElementById('backToSel_remote');
+    const nextBtn1_remote = document.getElementById('nextBtn1_remote');
+    const backBtn2_remote = document.getElementById('backBtn2_remote');
+    const nextBtn2_remote = document.getElementById('nextBtn2_remote'); // Переход к программе (Шаг 3)
+
+    const backBtn_program = document.getElementById('backBtn_program');
+    const nextBtn_program = document.getElementById('nextBtn_program');
     
+    const backBtn_awards = document.getElementById('backBtn_awards');
     const submitBtn = document.getElementById('submitBtn');
 
-    // Элементы Шага 2 (Программа)
-    const addPerfBtn = document.getElementById('addPerfBtn');
+    // Контейнеры динамических полей
     const perfContainer = document.getElementById('performancesContainer');
+    const accoContainer = document.getElementById('accommodationContainer');
+    const awardsListContainer = document.getElementById('awardsListContainer');
+    const addPerfBtn = document.getElementById('addPerfBtn');
+    const addAccoBtn = document.getElementById('addAccoBtn'); // Кнопка для проживания
 
-    // Элементы Шага 3 (Награды)
+    // Элементы наград
     const awardTypeSelect = document.getElementById('awardTypeSelect');
     const awardInputArea = document.getElementById('awardInputArea');
     const diplomaDetails = document.getElementById('diplomaDetails');
     const awardPerfName = document.getElementById('awardPerfName');
     const awardQty = document.getElementById('awardQty');
-    
-    // Для дипломов
     const diplomaParticipantName = document.getElementById('diplomaParticipantName');
     const addDiplomaNameBtn = document.getElementById('addDiplomaNameBtn');
     const diplomaNamesList = document.getElementById('diplomaNamesList');
-    
-    // Общий список наград и кнопка добавления
     const addAwardToListBtn = document.getElementById('addAwardToListBtn');
-    const awardsListContainer = document.getElementById('awardsListContainer');
-
-    // Временное хранилище имен для текущего ввода диплома
     let tempDiplomaNames = []; 
 
     // Модальное окно
@@ -142,21 +156,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('modalFormContainer').style.display = 'block';
         document.getElementById('modalSuccessContainer').style.display = 'none';
         
-        // Сброс на шаг 1
-        step1.style.display = 'block';
-        step2.style.display = 'none';
-        step3.style.display = 'none';
+        // Сброс к выбору
+        showStep(stepSelection);
         
         if (ticketForm) {
             ticketForm.reset();
             resetValidationStyles();
-            // Сброс номеров
+            // Сброс списков
             if(perfContainer) { perfContainer.innerHTML = ''; addPerformanceRow(1); }
-            // Сброс наград
+            if(accoContainer) { accoContainer.innerHTML = ''; addAccommodationRow(1); }
             if(awardsListContainer) { awardsListContainer.innerHTML = ''; }
+            
             if(submitBtn) { submitBtn.disabled = false; submitBtn.innerText = 'Отправить все'; submitBtn.style.opacity = '1'; }
             
-            // Сброс полей наград
             awardTypeSelect.value = 'none';
             awardInputArea.style.display = 'none';
             tempDiplomaNames = [];
@@ -171,17 +183,27 @@ document.addEventListener('DOMContentLoaded', () => {
         window.toggleScrollLock(false);
     }
 
+    // Вспомогательная функция показа шага
+    function showStep(stepElement) {
+        [stepSelection, step1_local, step1_remote, step2_remote, step_program, step_awards].forEach(el => {
+            if(el) el.style.display = 'none';
+        });
+        if(stepElement) stepElement.style.display = 'block';
+        if(ticketForm) ticketForm.scrollTop = 0;
+    }
+
     openBtns.forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openTicketModal(); }));
     closeBtns.forEach(btn => btn.addEventListener('click', closeTicketModal));
     window.addEventListener('click', (e) => { if (e.target == ticketModal) closeTicketModal(); });
 
-    // Маска телефона
-    const phoneInput = document.getElementById('phone');
-    if(phoneInput) {
-        phoneInput.addEventListener('input', handlePhoneMask);
-        phoneInput.addEventListener('focus', handlePhoneMask);
-        phoneInput.addEventListener('blur', handlePhoneMask);
-    }
+    // Маски для всех телефонов
+    const phoneInputs = document.querySelectorAll('.phone-mask');
+    phoneInputs.forEach(inp => {
+        inp.addEventListener('input', handlePhoneMask);
+        inp.addEventListener('focus', handlePhoneMask);
+        inp.addEventListener('blur', handlePhoneMask);
+    });
+
     function handlePhoneMask(e) {
         let el = e.target;
         let pattern = "+7 (___) ___-__-__";
@@ -197,33 +219,45 @@ document.addEventListener('DOMContentLoaded', () => {
         if(ticketForm) ticketForm.querySelectorAll('input, select, textarea').forEach(inp => inp.style.borderColor = '#e0e0e0');
     }
 
-    // === НАВИГАЦИЯ МЕЖДУ ШАГАМИ ===
-    
-    // 1 -> 2
-    if(nextBtn1) {
-        nextBtn1.addEventListener('click', () => {
-            // УБРАЛ 'email' ИЗ СПИСКА ОБЯЗАТЕЛЬНЫХ ПОЛЕЙ
-            const requiredStep1 = ['festDate', 'groupName', 'city', 'director', 'phone', 'participants', 'manager'];
-            let isValid = true;
-            requiredStep1.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && !el.value.trim()) { el.style.borderColor = 'red'; isValid = false; } 
-                else if(el) { el.style.borderColor = '#4caf50'; }
-            });
-            if(!isValid) {
-                alert("Заполните обязательные поля (*) на Шаге 1");
-                return;
-            }
-            step1.style.display = 'none'; step2.style.display = 'block'; ticketForm.scrollTop = 0;
+
+    // === ЛОГИКА ПЕРЕКЛЮЧЕНИЙ ===
+
+    // 0. Выбор типа
+    if(btnSelectLocal) btnSelectLocal.addEventListener('click', () => { isRemote = false; showStep(step1_local); });
+    if(btnSelectRemote) btnSelectRemote.addEventListener('click', () => { isRemote = true; showStep(step1_remote); });
+
+    // 1. Местные: Шаг 1 -> Программа
+    if(nextBtn1_local) {
+        nextBtn1_local.addEventListener('click', () => {
+            const required = ['festDate_local', 'groupName_local', 'city_local', 'director_local', 'phone_local', 'participants_local', 'manager_local'];
+            if(validateFields(required)) showStep(step_program);
         });
     }
+    if(backToSel_local) backToSel_local.addEventListener('click', () => showStep(stepSelection));
 
-    // 2 -> 1
-    if(backBtn2) { backBtn2.addEventListener('click', () => { step2.style.display = 'none'; step1.style.display = 'block'; }); }
+    // 1. Иногородние: Шаг 1 -> Шаг 2 (Проживание)
+    if(nextBtn1_remote) {
+        nextBtn1_remote.addEventListener('click', () => {
+            const required = ['festDate_remote', 'groupName_remote', 'city_remote', 'director_remote', 'phone_remote', 'participants_remote', 'manager_remote'];
+            if(validateFields(required)) showStep(step2_remote);
+        });
+    }
+    if(backToSel_remote) backToSel_remote.addEventListener('click', () => showStep(stepSelection));
 
-    // 2 -> 3 (Проверка номеров)
-    if(nextBtn2) {
-        nextBtn2.addEventListener('click', () => {
+    // 2. Иногородние: Шаг 2 (Проживание) -> Программа
+    if(nextBtn2_remote) {
+        nextBtn2_remote.addEventListener('click', () => {
+            // Проверка, что добавлен хотя бы один пакет
+            const accoCards = accoContainer.querySelectorAll('.acco-card');
+            if(accoCards.length === 0) { alert("Добавьте информацию о проживании!"); return; }
+            showStep(step_program);
+        });
+    }
+    if(backBtn2_remote) backBtn2_remote.addEventListener('click', () => showStep(step1_remote));
+
+    // 3. Программа -> Награды (Общая логика)
+    if(nextBtn_program) {
+        nextBtn_program.addEventListener('click', () => {
             const perfCards = perfContainer.querySelectorAll('.perf-card');
             if(perfCards.length === 0) { alert("Добавьте хотя бы один номер!"); return; }
             let perfValid = true;
@@ -233,19 +267,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 else { card.querySelector('.perf-name').style.borderColor = '#e0e0e0'; }
             });
             if(!perfValid) { alert("Заполните названия номеров!"); return; }
-            
-            step2.style.display = 'none'; step3.style.display = 'block'; ticketForm.scrollTop = 0;
+            showStep(step_awards);
+        });
+    }
+    if(backBtn_program) {
+        backBtn_program.addEventListener('click', () => {
+            // Если иногородние - назад на Шаг 2 (проживание), если местные - назад на Шаг 1 (общие)
+            if(isRemote) showStep(step2_remote);
+            else showStep(step1_local);
         });
     }
 
-    // 3 -> 2
-    if(backBtn3) { backBtn3.addEventListener('click', () => { step3.style.display = 'none'; step2.style.display = 'block'; }); }
+    // 4. Награды -> Назад
+    if(backBtn_awards) backBtn_awards.addEventListener('click', () => showStep(step_program));
+
+    function validateFields(ids) {
+        let isValid = true;
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && !el.value.trim()) { el.style.borderColor = 'red'; isValid = false; } 
+            else if(el) { el.style.borderColor = '#4caf50'; }
+        });
+        if(!isValid) alert("Заполните обязательные поля (*)");
+        return isValid;
+    }
 
 
-    // === ЛОГИКА ШАГА 2 (НОМЕРА) ===
+    // === ЛОГИКА НОМЕРОВ (ОБЩАЯ) ===
     function addPerformanceRow(index) {
         const div = document.createElement('div');
         div.className = 'perf-card';
+        // ЗАДАЧА 1: "Точка" изменена на "Точка/Выход"
         div.innerHTML = `
             <span class="perf-title"># Номер ${index}</span>
             ${index > 1 ? '<i class="fas fa-times perf-remove"></i>' : ''}
@@ -256,8 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="perf-grid">
                 <input type="text" class="perf-qty" placeholder="Кол-во чел." required>
-                <input type="text" class="perf-point" placeholder="Точка">
-            </div>
+                <input type="text" class="perf-point" placeholder="Точка/Выход"> </div>
             <div class="input-group" style="margin-top: 10px;"><input type="text" class="perf-time" placeholder="Время (мин:сек)" required></div>
         `;
         const removeBtn = div.querySelector('.perf-remove');
@@ -273,10 +324,51 @@ document.addEventListener('DOMContentLoaded', () => {
         addPerformanceRow(perfContainer.querySelectorAll('.perf-card').length + 1);
     });
 
+    // === ЛОГИКА ПРОЖИВАНИЯ (НОВОЕ ДЛЯ ИНОГОРОДНИХ) ===
+    function addAccommodationRow(index) {
+        const div = document.createElement('div');
+        div.className = 'acco-card';
+        div.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4>Группа ${index}</h4>
+                ${index > 1 ? '<i class="fas fa-times perf-remove" style="color:red; cursor:pointer;"></i>' : ''}
+            </div>
+            
+            <label class="form-label">1. Пакет участия</label>
+            <div class="input-group">
+                <select class="acco-package">
+                    <option value="Эконом">Эконом</option>
+                    <option value="Стандарт">Стандарт</option>
+                    <option value="Полный">Полный</option>
+                    <option value="Премиум">Премиум</option>
+                </select>
+            </div>
 
-    // === ЛОГИКА ШАГА 3 (НАГРАДЫ) ===
-    
-    // Смена типа награды
+            <label class="form-label">2. ФИО Участников (Паспорт/Св-во, Прописка, Д.Р.)</label>
+            <div class="input-group">
+                <textarea class="acco-participants" rows="3" placeholder="Иванов И.И., паспорт ..., прописка ..., 12.05.2010"></textarea>
+            </div>
+
+            <label class="form-label">3. Кол-во номеров и названия</label>
+            <div class="input-group">
+                <input type="text" class="acco-perf-count" placeholder="Например: 2 номера (Танец огня, Вальс)">
+            </div>
+
+            <label class="form-label">4. ФИО Сопровождающих / Детей без участия</label>
+            <div class="input-group">
+                <textarea class="acco-accompanying" rows="2" placeholder="Данные сопровождающих..."></textarea>
+            </div>
+        `;
+        const removeBtn = div.querySelector('.perf-remove');
+        if(removeBtn) removeBtn.addEventListener('click', () => { div.remove(); });
+        accoContainer.appendChild(div);
+    }
+    if(addAccoBtn) addAccoBtn.addEventListener('click', () => {
+        addAccommodationRow(accoContainer.querySelectorAll('.acco-card').length + 1);
+    });
+
+
+    // === ЛОГИКА НАГРАД (ОБЩАЯ) ===
     if(awardTypeSelect) {
         awardTypeSelect.addEventListener('change', () => {
             const type = awardTypeSelect.value;
@@ -284,13 +376,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 awardInputArea.style.display = 'none';
             } else {
                 awardInputArea.style.display = 'block';
-                // Очищаем поля
                 awardPerfName.value = '';
                 awardQty.value = '';
                 tempDiplomaNames = [];
                 renderDiplomaNames();
-                
-                // Логика отображения блока с именами
                 if(type === 'diploma') {
                     diplomaDetails.style.display = 'block';
                     awardQty.placeholder = "Общее кол-во дипломов";
@@ -302,7 +391,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Добавление имени участника (для диплома)
     if(addDiplomaNameBtn) {
         addDiplomaNameBtn.addEventListener('click', () => {
             const name = diplomaParticipantName.value.trim();
@@ -327,27 +415,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Добавление заявки на награду в список
     if(addAwardToListBtn) {
         addAwardToListBtn.addEventListener('click', () => {
             const type = awardTypeSelect.value;
             const perf = awardPerfName.value.trim();
             let qty = awardQty.value.trim();
-            
-            // Валидация
             if(!perf) { alert("Укажите название номера!"); return; }
-            
-            // Для дипломов: если кол-во пустое, ставим равным списку имен или 1
             if(type === 'diploma' && !qty) {
                 qty = tempDiplomaNames.length > 0 ? tempDiplomaNames.length : 1;
             } else if(!qty) {
                 qty = 1; 
             }
 
-            // Формируем текст деталей
             let typeLabel = "";
             let details = "";
-            
             if(type === 'medal') typeLabel = "Медаль";
             if(type === 'cup') typeLabel = "Кубок";
             if(type === 'diploma') {
@@ -355,9 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 details = tempDiplomaNames.length > 0 ? tempDiplomaNames.join(', ') : "Без имен";
             }
 
-            // Создаем визуальную карточку
             const div = document.createElement('div');
-            div.className = 'perf-card'; // Используем тот же стиль
+            div.className = 'perf-card';
             div.style.borderColor = '#6e85b7';
             div.innerHTML = `
                 <div style="display:flex; justify-content:space-between;">
@@ -367,17 +447,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>Номер: ${perf}</div>
                 ${details ? `<div style="font-size:0.9rem; color:#666;">${details}</div>` : ''}
                 <div style="text-align:right; font-weight:bold;">Кол-во: ${qty}</div>
-                
                 <input type="hidden" class="aw-type" value="${typeLabel}">
                 <input type="hidden" class="aw-perf" value="${perf}">
                 <input type="hidden" class="aw-details" value="${details}">
                 <input type="hidden" class="aw-qty" value="${qty}">
             `;
-            
             div.querySelector('.perf-remove').addEventListener('click', () => div.remove());
             awardsListContainer.appendChild(div);
-
-            // Очистка формы
             awardPerfName.value = '';
             awardQty.value = '';
             tempDiplomaNames = [];
@@ -392,26 +468,75 @@ document.addEventListener('DOMContentLoaded', () => {
         ticketForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // 1. Данные Шага 1
-            const formData = {
-                festDate: document.getElementById('festDate').value,
-                groupName: document.getElementById('groupName').value,
-                city: document.getElementById('city').value,
-                director: document.getElementById('director').value,
-                teacher: document.getElementById('teacher').value,
-                tutor: document.getElementById('tutor').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                socials: document.getElementById('socials').value,
-                participants: document.getElementById('participants').value,
-                accompanying: document.getElementById('accompanying').value,
-                manager: document.getElementById('manager').value,
-                grant: document.getElementById('grant').value,
-                performances: [],
-                awards: [] 
-            };
+            let formData = {};
 
-            // 2. Данные Шага 2 (Номера)
+            if (!isRemote) {
+                // СБОР ДЛЯ МЕСТНЫХ
+                formData = {
+                    type: "МЕСТНЫЕ",
+                    festDate: document.getElementById('festDate_local').value,
+                    groupName: document.getElementById('groupName_local').value,
+                    city: document.getElementById('city_local').value,
+                    director: document.getElementById('director_local').value,
+                    teacher: document.getElementById('teacher_local').value,
+                    phone: document.getElementById('phone_local').value,
+                    email: document.getElementById('email_local').value,
+                    socials: document.getElementById('socials_local').value,
+                    participants: document.getElementById('participants_local').value,
+                    accompanying: document.getElementById('accompanying_local').value,
+                    manager: document.getElementById('manager_local').value,
+                    grant: document.getElementById('grant_local').value,
+                    // Пустые поля иногородних
+                    arrival: "", departure: "", accommodationList: []
+                };
+            } else {
+                // СБОР ДЛЯ ИНОГОРОДНИХ
+                const arrDate = document.getElementById('arrivalDate').value;
+                const arrTime = document.getElementById('arrivalTime').value;
+                const arrWagon = document.getElementById('arrivalWagon').value;
+                const arrSt = document.getElementById('arrivalStation').value;
+                
+                const depDate = document.getElementById('depDate').value;
+                const depTime = document.getElementById('depTime').value;
+                const depWagon = document.getElementById('depWagon').value;
+                const depSt = document.getElementById('depStation').value;
+
+                formData = {
+                    type: "ИНОГОРОДНИЕ",
+                    festDate: document.getElementById('festDate_remote').value,
+                    groupName: document.getElementById('groupName_remote').value,
+                    city: document.getElementById('city_remote').value,
+                    director: document.getElementById('director_remote').value,
+                    teacher: document.getElementById('teacher_remote').value + " / " + document.getElementById('tutor_remote').value,
+                    phone: document.getElementById('phone_remote').value,
+                    email: document.getElementById('email_remote').value,
+                    socials: document.getElementById('socials_remote').value,
+                    participants: document.getElementById('participants_remote').value,
+                    accompanying: document.getElementById('accompanying_remote').value,
+                    manager: document.getElementById('manager_remote').value,
+                    grant: document.getElementById('grant_remote').value,
+                    extraMedals: document.getElementById('medal_info_remote').value,
+                    
+                    arrival: `Приезд: ${arrDate} ${arrTime}, Вагон ${arrWagon}, ${arrSt}`,
+                    departure: `Отъезд: ${depDate} ${depTime}, Вагон ${depWagon}, ${depSt}`,
+                    
+                    accommodationList: []
+                };
+
+                // Сбор списков проживания
+                const accoCards = accoContainer.querySelectorAll('.acco-card');
+                accoCards.forEach(card => {
+                    formData.accommodationList.push({
+                        package: card.querySelector('.acco-package').value,
+                        people: card.querySelector('.acco-participants').value,
+                        perfCount: card.querySelector('.acco-perf-count').value,
+                        accompaningData: card.querySelector('.acco-accompanying').value
+                    });
+                });
+            }
+
+            // Общие данные (Номера и Награды)
+            formData.performances = [];
             const perfCards = perfContainer.querySelectorAll('.perf-card');
             perfCards.forEach(card => {
                 formData.performances.push({
@@ -424,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // 3. Данные Шага 3 (Награды)
+            formData.awards = [];
             const awCards = awardsListContainer.querySelectorAll('.perf-card');
             awCards.forEach(card => {
                 formData.awards.push({

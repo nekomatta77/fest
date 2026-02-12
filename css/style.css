@@ -1206,3 +1206,66 @@ ul {
         margin-bottom: 40px;
     }
 }
+/* --- СТИЛИ ДЛЯ ВЫБОРА ТИПА ЗАЯВКИ --- */
+.selection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.selection-card {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.selection-card:hover {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 10px 20px rgba(110, 133, 183, 0.15);
+    transform: translateY(-5px);
+}
+
+.selection-card i {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.selection-card h3 {
+    font-family: var(--font-serif);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.selection-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Адаптив для выбора */
+@media (max-width: 480px) {
+    .selection-grid { grid-template-columns: 1fr; }
+}
+
+/* Стили для карточек проживания (Шаг 2 Иногородние) */
+.acco-card {
+    background: #f0f8ff; /* Светло-голубой фон */
+    border: 1px solid #b2c8df;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.acco-card h4 {
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+}

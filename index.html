@@ -265,45 +265,58 @@
                 
                 <form id="ticketForm" novalidate style="max-height: 70vh; overflow-y: auto; padding-right: 5px;">
                     
-                    <div id="step1">
-                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 1: Общие данные</p>
+                    <div id="stepSelection">
+                        <p style="text-align: center; color: var(--text-muted);">Пожалуйста, выберите тип участия:</p>
+                        <div class="selection-grid">
+                            <div class="selection-card" id="btnSelectLocal">
+                                <i class="fas fa-home"></i>
+                                <h3>Я местный</h3>
+                                <p>Без проживания<br>(3 шага анкеты)</p>
+                            </div>
+                            <div class="selection-card" id="btnSelectRemote">
+                                <i class="fas fa-suitcase-rolling"></i>
+                                <h3>Я иногородний</h3>
+                                <p>С проживанием<br>(4 шага анкеты)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="step1_local" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 1: Общие данные (Местные)</p>
                         
                         <label class="form-label">Дата проведения фестиваля <span class="red-star">*</span></label>
-                        <div class="input-group"><input type="date" id="festDate" required></div>
+                        <div class="input-group"><input type="date" id="festDate_local" required></div>
 
                         <label class="form-label">Полное название коллектива <span class="red-star">*</span></label>
-                        <div class="input-group"><input type="text" id="groupName" placeholder="Введите название" autocomplete="off"></div>
+                        <div class="input-group"><input type="text" id="groupName_local" placeholder="Введите название"></div>
 
                         <label class="form-label">Страна, город <span class="red-star">*</span></label>
-                        <div class="input-group"><input type="text" id="city" placeholder="Где занимается коллектив" autocomplete="off"></div>
+                        <div class="input-group"><input type="text" id="city_local" placeholder="Где занимается коллектив"></div>
 
                         <label class="form-label">Ф.И.О. руководителя <span class="red-star">*</span></label>
-                        <div class="input-group"><input type="text" id="director" placeholder="Иванов Иван Иванович" autocomplete="off"></div>
+                        <div class="input-group"><input type="text" id="director_local" placeholder="Иванов Иван Иванович"></div>
 
-                        <label class="form-label">Ф.И.О. педагога</label>
-                        <div class="input-group"><input type="text" id="teacher" placeholder="Если есть" autocomplete="off"></div>
-
-                        <label class="form-label">Ф.И.О. репетитора</label>
-                        <div class="input-group"><input type="text" id="tutor" placeholder="Если есть" autocomplete="off"></div>
+                        <label class="form-label">Ф.И.О. педагога / репетитора</label>
+                        <div class="input-group"><input type="text" id="teacher_local" placeholder="Если есть"></div>
 
                         <label class="form-label">Контактный телефон <span class="red-star">*</span></label>
-                        <div class="input-group"><input type="tel" id="phone" placeholder="+7 (___) ___-__-__" autocomplete="off"></div>
+                        <div class="input-group"><input type="tel" id="phone_local" class="phone-mask" placeholder="+7 (___) ___-__-__"></div>
 
                         <label class="form-label">Email руководителя</label>
-                        <div class="input-group"><input type="email" id="email" placeholder="example@mail.ru" autocomplete="off"></div>
+                        <div class="input-group"><input type="email" id="email_local" placeholder="example@mail.ru"></div>
 
                         <label class="form-label">Ссылка на соцсети</label>
-                        <div class="input-group"><input type="text" id="socials" placeholder="ВКонтакте / Telegram" autocomplete="off"></div>
+                        <div class="input-group"><input type="text" id="socials_local" placeholder="ВКонтакте / Telegram"></div>
 
                         <label class="form-label">Кол-во участников + возраст <span class="red-star">*</span></label>
-                        <div class="input-group"><textarea id="participants" rows="2" placeholder="Например:&#10;Беби - 10 чел.&#10;Взрослые - 24 чел."></textarea></div>
+                        <div class="input-group"><textarea id="participants_local" rows="2" placeholder="Беби - 10, Взрослые - 24"></textarea></div>
 
                         <label class="form-label">Кол-во сопровождающих</label>
-                        <div class="input-group"><input type="number" id="accompanying" placeholder="Без учета руководителей" autocomplete="off"></div>
+                        <div class="input-group"><input type="number" id="accompanying_local" placeholder="Без учета руководителей"></div>
 
                         <label class="form-label">Ваш менеджер <span class="red-star">*</span></label>
                         <div class="input-group">
-                            <select id="manager">
+                            <select id="manager_local">
                                 <option value="" disabled selected>Выберите менеджера</option>
                                 <option value="Анна">Анна</option>
                                 <option value="Любовь">Любовь</option>
@@ -313,26 +326,119 @@
 
                         <label class="form-label">Грантовый сертификат</label>
                         <div class="input-group">
-                            <input type="text" id="grant" placeholder="Сумма сертификата (если есть)" autocomplete="off">
-                            <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">* Фото сертификата отправьте лично менеджеру</p>
+                            <input type="text" id="grant_local" placeholder="Сумма сертификата (если есть)">
                         </div>
 
-                        <button type="button" id="nextBtn1" class="btn-primary full-width">Далее (К программе) &rarr;</button>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backToSel_local" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Меню</button>
+                            <button type="button" id="nextBtn1_local" class="btn-primary" style="flex: 1;">Далее &rarr;</button>
+                        </div>
                     </div>
 
-                    <div id="step2" style="display: none;">
-                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 2: Программа выступлений</p>
+                    <div id="step1_remote" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 1: Общие данные (С проживанием)</p>
+
+                        <label class="form-label">1. Дата проведения фестиваля <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="date" id="festDate_remote"></div>
+
+                        <label class="form-label">2. Полное название коллектива <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="groupName_remote"></div>
+
+                        <label class="form-label">3. Страна, город <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="city_remote"></div>
+
+                        <label class="form-label">3. Ф.И.О. руководителя <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="director_remote"></div>
+
+                        <label class="form-label">4. Ф.И.О. педагога + номер</label>
+                        <div class="input-group"><input type="text" id="teacher_remote" placeholder="ФИО - Название номера"></div>
+
+                        <label class="form-label">5. Ф.И.О. репетитора + номер</label>
+                        <div class="input-group"><input type="text" id="tutor_remote" placeholder="ФИО - Название номера"></div>
+
+                        <label class="form-label">6. Контактный телефон <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="tel" id="phone_remote" class="phone-mask" placeholder="+7 (___) ___-__-__"></div>
+
+                        <label class="form-label">7. Email руководителя</label>
+                        <div class="input-group"><input type="email" id="email_remote"></div>
+
+                        <div style="background: #f0f4f8; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                            <label class="form-label" style="margin-top:0;">8. Дата приезда</label>
+                            <input type="date" id="arrivalDate" style="margin-bottom: 5px;">
+                            <div class="perf-grid">
+                                <input type="time" id="arrivalTime" placeholder="Время">
+                                <input type="text" id="arrivalWagon" placeholder="№ Вагона">
+                            </div>
+                            <input type="text" id="arrivalStation" placeholder="Название вокзала" style="margin-top: 5px;">
+                        </div>
+
+                        <div style="background: #f0f4f8; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                            <label class="form-label" style="margin-top:0;">9. Дата отъезда</label>
+                            <input type="date" id="depDate" style="margin-bottom: 5px;">
+                            <div class="perf-grid">
+                                <input type="time" id="depTime" placeholder="Время">
+                                <input type="text" id="depWagon" placeholder="№ Вагона">
+                            </div>
+                            <input type="text" id="depStation" placeholder="Название вокзала" style="margin-top: 5px;">
+                        </div>
+
+                        <label class="form-label">10. Соцсети</label>
+                        <div class="input-group"><input type="text" id="socials_remote"></div>
+
+                        <label class="form-label">11. Кол-во участников + возраст <span class="red-star">*</span></label>
+                        <div class="input-group"><textarea id="participants_remote" placeholder="Беби - 10, Взрослые - 24"></textarea></div>
+
+                        <label class="form-label">12. Кол-во сопровождающих</label>
+                        <div class="input-group"><input type="number" id="accompanying_remote" placeholder="Без учета руководителей"></div>
+
+                        <label class="form-label">13. Менеджер <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <select id="manager_remote">
+                                <option value="" disabled selected>Выберите менеджера</option>
+                                <option value="Анна">Анна</option>
+                                <option value="Любовь">Любовь</option>
+                                <option value="Светлана">Светлана</option>
+                            </select>
+                        </div>
+
+                        <label class="form-label">14. Грант (сумма)</label>
+                        <div class="input-group"><input type="text" id="grant_remote" placeholder="Фото сертификата отправьте менеджеру"></div>
+
+                        <label class="form-label">15. Название номера (в пакете) + Кол-во медалей</label>
+                        <div class="input-group"><textarea id="medal_info_remote" placeholder="Номер - 15 медалей"></textarea></div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backToSel_remote" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Меню</button>
+                            <button type="button" id="nextBtn1_remote" class="btn-primary" style="flex: 1;">К проживанию &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div id="step2_remote" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 2: Проживание и Списки</p>
+                        
+                        <div id="accommodationContainer"></div>
+                        
+                        <button type="button" id="addAccoBtn" class="btn-secondary full-width" style="border: 1px dashed var(--primary); color: var(--primary); margin-top: 15px;">+ Добавить группу (Пакет)</button>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backBtn2_remote" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
+                            <button type="button" id="nextBtn2_remote" class="btn-primary" style="flex: 1;">К программе &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div id="step_program" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Программа выступлений</p>
                         <div id="performancesContainer"></div>
                         <button type="button" id="addPerfBtn" class="btn-secondary full-width" style="border: 1px dashed var(--primary); color: var(--primary); margin-top: 15px;">+ Добавить номер</button>
 
                         <div style="display: flex; gap: 10px; margin-top: 20px;">
-                            <button type="button" id="backBtn2" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
-                            <button type="button" id="nextBtn2" class="btn-primary" style="flex: 1; margin: 0;">К наградам &rarr;</button>
+                            <button type="button" id="backBtn_program" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
+                            <button type="button" id="nextBtn_program" class="btn-primary" style="flex: 1; margin: 0;">К наградам &rarr;</button>
                         </div>
                     </div>
 
-                    <div id="step3" style="display: none;">
-                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 3: Наградная продукция</p>
+                    <div id="step_awards" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Наградная продукция (Доп.)</p>
                         
                         <label class="form-label">Выберите тип награды:</label>
                         <div class="input-group">
@@ -345,11 +451,9 @@
                         </div>
 
                         <div id="awardInputArea" style="background: #f0f4f8; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none;">
-                            
                             <div class="input-group">
                                 <input type="text" id="awardPerfName" placeholder="Название номера" autocomplete="off">
                             </div>
-
                             <div id="diplomaDetails" style="display: none;">
                                 <label class="form-label" style="margin-top: 0;">ФИО Участника:</label>
                                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -358,11 +462,9 @@
                                 </div>
                                 <ul id="diplomaNamesList" style="list-style: none; padding: 0; margin-bottom: 10px; font-size: 0.9rem;"></ul>
                             </div>
-
                             <div class="input-group">
                                 <input type="number" id="awardQty" placeholder="Количество штук" autocomplete="off">
                             </div>
-
                             <button type="button" id="addAwardToListBtn" class="btn-secondary full-width" style="background: var(--primary); color: white;">Добавить в список заказа</button>
                         </div>
 
@@ -370,7 +472,7 @@
                         <div id="awardsListContainer"></div>
 
                         <div style="display: flex; gap: 10px; margin-top: 20px;">
-                            <button type="button" id="backBtn3" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
+                            <button type="button" id="backBtn_awards" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
                             <button type="submit" id="submitBtn" class="btn-primary" style="flex: 1; margin: 0;">Отправить все</button>
                         </div>
                     </div>
@@ -381,7 +483,7 @@
             <div id="modalSuccessContainer" style="display: none; text-align: center;">
                 <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
                 <h2>Спасибо!</h2>
-                <p>Ваша заявка (Формы 1, 2 и 3) успешно отправлена.</p>
+                <p>Ваша заявка успешно отправлена.</p>
                 <button class="btn-secondary close-modal-action" style="margin-top: 20px;">Закрыть</button>
             </div>
         </div>
