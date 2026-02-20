@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="О Всероссийском фестивале хореографического искусства Время танцевать.">
+    <title>О нас | Время танцевать</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .form-label { display: block; text-align: left; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-top: 10px; }
+        .red-star { color: red; font-weight: bold; }
+        textarea { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-family: 'Montserrat', sans-serif; resize: vertical; font-size: 1rem; }
+        textarea:focus { outline: none; border-color: var(--primary); }
+        #ticketForm::-webkit-scrollbar { width: 6px; }
+        #ticketForm::-webkit-scrollbar-track { background: #f1f1f1; }
+        #ticketForm::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .perf-card { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; margin-bottom: 15px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .perf-title { font-weight: bold; color: var(--primary); margin-bottom: 10px; display: block; font-size: 1rem; }
+        .perf-remove { position: absolute; top: 10px; right: 10px; color: #ff4d4d; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .perf-remove:hover { transform: scale(1.1); }
+        .perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .perf-card input { background: white; font-size: 0.9rem; padding: 10px; }
+        #diplomaNamesList li { background: white; padding: 5px 10px; border-radius: 5px; margin-bottom: 5px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        @media (max-width: 480px) { .perf-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="menu-overlay"></div>
+
+    <nav class="navbar scrolled" style="background: white;"> <a href="index.html" class="logo-container" aria-label="На главную">
+            <img src="assets/logo.png" alt="Вдохновение Лого" class="logo-img logo-base">
+        </a>
+        <ul class="nav-links">
+            <li style="--i:1;"><a href="index.html#schedule">График</a></li>
+            <li style="--i:2;"><a href="#gallery">Галерея</a></li>
+            <li style="--i:3;"><a href="index.html#jury">Жюри</a></li>
+            <li style="--i:4;"><a href="managers.html">Оргкомитет</a></li>
+            <li style="--i:5;"><a href="about.html" style="color: var(--primary); font-weight: bold;">О нас</a></li>
+            <li style="--i:6;"><a href="#" class="btn-nav open-modal-btn">Заполнить анкету</a></li>
+        </ul>
+        <div class="burger" aria-label="Меню" role="button" tabindex="0">
+            <div class="line1" style="background: var(--text-main);"></div>
+            <div class="line2" style="background: var(--text-main);"></div>
+            <div class="line3" style="background: var(--text-main);"></div>
+        </div>
+    </nav>
+
+    <main class="about-page-wrapper">
+        <div class="about-page-container fade-in visible">
+            <h1 class="about-page-title">Всероссийский фестиваль хореографического искусства <br><span class="highlight-text" style="margin-top:0; text-align: center;">"Время танцевать"</span></h1>
+            
+            <div class="about-page-text">
+                <p>Мы создаем атмосферные, профессиональные, веселые и дружелюбные фестивали танцевального искусства с 2018 года.</p>
+                <p>Наша команда тщательно подходит к каждому событию: индивидуальное отношение к коллективам, внимательное составление программ выступлений и гибкий подход к графикам.</p>
+                <span class="highlight-text">Мотивация, атмосфера, творчество, любовь, талант, вдохновение, искусство, объединение, призвание — это всё о нашем фестивале!</span>
+            </div>
+        </div>
+    </main>
+
+    <section id="gallery" class="section gallery-section dark-bg" style="margin: 0; border-radius: 0; border: none; padding-top: 60px;">
+        <div class="container">
+            <h2 class="section-title compact-title">Галерея</h2>
+        </div>
+        <div class="gallery-scroller-container fade-in">
+            <div class="gallery-track" id="galleryTrack"></div>
+        </div>
+        <div class="container" style="text-align: center; margin-top: 30px;">
+            <button id="openGalleryBtn" class="btn-secondary" style="border-color: var(--primary); color: var(--text-main); background: white;">Загрузка фото...</button>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container">
+            <h2>Стань частью <span class="italic-accent-dark">вдохновения</span></h2>
+            <p>Москва, Парк Останкино | 25-27 Июля</p>
+            <a href="#" class="btn-primary open-modal-btn">Подать заявку</a>
+            <div class="socials">
+                <a href="#" aria-label="VK"><i class="fab fa-vk"></i></a>
+                <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="copyright">© 2026 Lubov Festival.</p>
+        </div>
+    </footer>
+
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            
+            <div id="modalFormContainer">
+                <h2 style="font-family: 'Playfair Display', serif; text-align: center;">Анкета участника</h2>
+                
+                <form id="ticketForm" novalidate style="max-height: 70vh; overflow-y: auto; padding-right: 5px;">
+                    
+                    <div id="stepSelection">
+                        <p style="text-align: center; color: var(--text-muted);">Пожалуйста, выберите тип участия:</p>
+                        <div class="selection-grid">
+                            <div class="selection-card" id="btnSelectLocal">
+                                <i class="fas fa-home"></i>
+                                <h3>Я местный</h3>
+                                <p>Без проживания<br>(3 шага анкеты)</p>
+                            </div>
+                            <div class="selection-card" id="btnSelectRemote">
+                                <i class="fas fa-suitcase-rolling"></i>
+                                <h3>Я иногородний</h3>
+                                <p>С проживанием<br>(4 шага анкеты)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="step1_local" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 1: Общие данные (Местные)</p>
+                        <label class="form-label">Дата проведения фестиваля <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="date" id="festDate_local" required></div>
+                        <label class="form-label">Полное название коллектива <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="groupName_local" placeholder="Введите название"></div>
+                        <label class="form-label">Страна, город <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="city_local" placeholder="Где занимается коллектив"></div>
+                        <label class="form-label">Ф.И.О. руководителя <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="director_local" placeholder="Иванов Иван Иванович"></div>
+                        <label class="form-label">Ф.И.О. педагога / репетитора</label>
+                        <div class="input-group"><input type="text" id="teacher_local" placeholder="Если есть"></div>
+                        <label class="form-label">Контактный телефон <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="tel" id="phone_local" class="phone-mask" placeholder="+7 (___) ___-__-__"></div>
+                        <label class="form-label">Email руководителя</label>
+                        <div class="input-group"><input type="email" id="email_local" placeholder="example@mail.ru"></div>
+                        <label class="form-label">Ссылка на соцсети</label>
+                        <div class="input-group"><input type="text" id="socials_local" placeholder="ВКонтакте / Telegram"></div>
+                        <label class="form-label">Кол-во участников + возраст <span class="red-star">*</span></label>
+                        <div class="input-group"><textarea id="participants_local" rows="2" placeholder="Беби - 10, Взрослые - 24"></textarea></div>
+                        <label class="form-label">Кол-во сопровождающих</label>
+                        <div class="input-group"><input type="number" id="accompanying_local" placeholder="Без учета руководителей"></div>
+                        <label class="form-label">Ваш менеджер <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <select id="manager_local">
+                                <option value="" disabled selected>Выберите менеджера</option>
+                                <option value="Анна">Анна</option>
+                                <option value="Любовь">Любовь</option>
+                                <option value="Светлана">Светлана</option>
+                            </select>
+                        </div>
+                        <label class="form-label">Грантовый сертификат</label>
+                        <div class="input-group"><input type="text" id="grant_local" placeholder="Сумма сертификата (если есть)"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backToSel_local" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Меню</button>
+                            <button type="button" id="nextBtn1_local" class="btn-primary" style="flex: 1;">Далее &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div id="step1_remote" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 1: Общие данные (С проживанием)</p>
+                        <label class="form-label">1. Дата проведения фестиваля <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="date" id="festDate_remote"></div>
+                        <label class="form-label">2. Полное название коллектива <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="groupName_remote"></div>
+                        <label class="form-label">3. Страна, город <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="city_remote"></div>
+                        <label class="form-label">3. Ф.И.О. руководителя <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="text" id="director_remote"></div>
+                        <label class="form-label">4. Ф.И.О. педагога + номер</label>
+                        <div class="input-group"><input type="text" id="teacher_remote" placeholder="ФИО - Название номера"></div>
+                        <label class="form-label">5. Ф.И.О. репетитора + номер</label>
+                        <div class="input-group"><input type="text" id="tutor_remote" placeholder="ФИО - Название номера"></div>
+                        <label class="form-label">6. Контактный телефон <span class="red-star">*</span></label>
+                        <div class="input-group"><input type="tel" id="phone_remote" class="phone-mask" placeholder="+7 (___) ___-__-__"></div>
+                        <label class="form-label">7. Email руководителя</label>
+                        <div class="input-group"><input type="email" id="email_remote"></div>
+                        <div style="background: #f0f4f8; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                            <label class="form-label" style="margin-top:0;">8. Дата приезда</label>
+                            <input type="date" id="arrivalDate" style="margin-bottom: 5px;">
+                            <div class="perf-grid">
+                                <input type="time" id="arrivalTime" placeholder="Время">
+                                <input type="text" id="arrivalWagon" placeholder="№ Вагона">
+                            </div>
+                            <input type="text" id="arrivalStation" placeholder="Название вокзала" style="margin-top: 5px;">
+                        </div>
+                        <div style="background: #f0f4f8; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                            <label class="form-label" style="margin-top:0;">9. Дата отъезда</label>
+                            <input type="date" id="depDate" style="margin-bottom: 5px;">
+                            <div class="perf-grid">
+                                <input type="time" id="depTime" placeholder="Время">
+                                <input type="text" id="depWagon" placeholder="№ Вагона">
+                            </div>
+                            <input type="text" id="depStation" placeholder="Название вокзала" style="margin-top: 5px;">
+                        </div>
+                        <label class="form-label">10. Соцсети</label>
+                        <div class="input-group"><input type="text" id="socials_remote"></div>
+                        <label class="form-label">11. Кол-во участников + возраст <span class="red-star">*</span></label>
+                        <div class="input-group"><textarea id="participants_remote" placeholder="Беби - 10, Взрослые - 24"></textarea></div>
+                        <label class="form-label">12. Кол-во сопровождающих</label>
+                        <div class="input-group"><input type="number" id="accompanying_remote" placeholder="Без учета руководителей"></div>
+                        <label class="form-label">13. Менеджер <span class="red-star">*</span></label>
+                        <div class="input-group">
+                            <select id="manager_remote">
+                                <option value="" disabled selected>Выберите менеджера</option>
+                                <option value="Анна">Анна</option>
+                                <option value="Любовь">Любовь</option>
+                                <option value="Светлана">Светлана</option>
+                            </select>
+                        </div>
+                        <label class="form-label">14. Грант (сумма)</label>
+                        <div class="input-group"><input type="text" id="grant_remote" placeholder="Фото сертификата отправьте менеджеру"></div>
+                        <label class="form-label">15. Название номера (в пакете) + Кол-во медалей</label>
+                        <div class="input-group"><textarea id="medal_info_remote" placeholder="Номер - 15 медалей"></textarea></div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backToSel_remote" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Меню</button>
+                            <button type="button" id="nextBtn1_remote" class="btn-primary" style="flex: 1;">К проживанию &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div id="step2_remote" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Шаг 2: Проживание и Списки</p>
+                        <div id="accommodationContainer"></div>
+                        <button type="button" id="addAccoBtn" class="btn-secondary full-width" style="border: 1px dashed var(--primary); color: var(--primary); margin-top: 15px;">+ Добавить участника</button>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backBtn2_remote" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
+                            <button type="button" id="nextBtn2_remote" class="btn-primary" style="flex: 1;">К программе &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div id="step_program" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Программа выступлений</p>
+                        <div id="performancesContainer"></div>
+                        <button type="button" id="addPerfBtn" class="btn-secondary full-width" style="border: 1px dashed var(--primary); color: var(--primary); margin-top: 15px;">+ Добавить номер</button>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backBtn_program" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
+                            <button type="button" id="nextBtn_program" class="btn-primary" style="flex: 1; margin: 0;">К наградам &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div id="step_awards" style="display: none;">
+                        <p style="margin-bottom: 20px; color: var(--text-muted); text-align: center;">Наградная продукция (Доп.)</p>
+                        <label class="form-label">Выберите тип награды:</label>
+                        <div class="input-group">
+                            <select id="awardTypeSelect">
+                                <option value="none" selected>Не выбрано</option>
+                                <option value="medal">Медали</option>
+                                <option value="diploma">Дипломы</option>
+                                <option value="cup">Кубки</option>
+                            </select>
+                        </div>
+
+                        <div id="awardInputArea" style="background: #f0f4f8; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none;">
+                            <div class="input-group"><input type="text" id="awardPerfName" placeholder="Название номера" autocomplete="off"></div>
+                            <div id="diplomaDetails" style="display: none;">
+                                <label class="form-label" style="margin-top: 0;">ФИО Участника:</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" id="diplomaParticipantName" placeholder="Введите ФИО">
+                                    <button type="button" id="addDiplomaNameBtn" class="btn-secondary" style="padding: 10px; width: auto; background: var(--primary); color: white;">+</button>
+                                </div>
+                                <ul id="diplomaNamesList" style="list-style: none; padding: 0; margin-bottom: 10px; font-size: 0.9rem;"></ul>
+                            </div>
+                            <div class="input-group"><input type="number" id="awardQty" placeholder="Количество штук" autocomplete="off"></div>
+                            <button type="button" id="addAwardToListBtn" class="btn-secondary full-width" style="background: var(--primary); color: white;">Добавить в список заказа</button>
+                        </div>
+
+                        <h4 style="font-size: 1rem; margin-bottom: 10px; color: var(--text-main);">Ваш заказ наград:</h4>
+                        <div id="awardsListContainer"></div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="button" id="backBtn_awards" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>
+                            <button type="submit" id="submitBtn" class="btn-primary" style="flex: 1; margin: 0;">Отправить все</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            
+            <div id="modalSuccessContainer" style="display: none; text-align: center;">
+                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
+                <h2>Спасибо!</h2>
+                <p>Ваша заявка успешно отправлена.</p>
+                <button class="btn-secondary close-modal-action" style="margin-top: 20px;">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="galleryModal" class="modal gallery-modal">
+        <div class="modal-content gallery-content">
+            <span class="close-gallery-btn">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px;">Фотоотчет</h2>
+            <div class="full-gallery-grid" id="fullGalleryGrid"></div>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <div class="lightbox-wrapper"><img class="lightbox-image" id="lightboxImg" src="" alt="Full view"></div>
+        <div class="zoom-hint">Колесико / Жест - Зум | Драг - Перемещение</div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

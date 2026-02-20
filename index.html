@@ -2,14 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta 
-        name="viewport" 
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
-    <meta 
-        name="description" 
-        content="Фестиваль искусств Вдохновение 2.0. Театр, музыка и перформансы."
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Фестиваль искусств Вдохновение 2.0. Театр, музыка и перформансы.">
     <title>Вдохновение 2.0 | Фестиваль Искусств</title>
     
     <link rel="stylesheet" href="css/style.css">
@@ -125,11 +119,11 @@
             <img src="assets/logo.png" alt="" class="logo-img logo-overlay" aria-hidden="true">
         </a>
         <ul class="nav-links">
-            <li style="--i:1;"><a href="#about">О фестивале</a></li>
-            <li style="--i:2;"><a href="#program">Программа</a></li>
-            <li style="--i:3;"><a href="#gallery">Галерея</a></li>
-            <li style="--i:4;"><a href="#jury">Жюри</a></li>
-            <li style="--i:5;"><a href="managers.html">Оргкомитет</a></li>
+            <li style="--i:1;"><a href="#schedule">График</a></li>
+            <li style="--i:2;"><a href="#gallery">Галерея</a></li>
+            <li style="--i:3;"><a href="#jury">Жюри</a></li>
+            <li style="--i:4;"><a href="managers.html">Оргкомитет</a></li>
+            <li style="--i:5;"><a href="about.html">О нас</a></li>
             <li style="--i:6;"><a href="#" class="btn-nav open-modal-btn">Заполнить анкету</a></li>
         </ul>
         <div class="burger" aria-label="Меню" role="button" tabindex="0">
@@ -142,64 +136,63 @@
     <header class="hero">
         <div class="hero-content">
             <div class="glass-card fade-in visible">
-                <h1>Искусство <span id="particleContainer" class="italic-accent particle-wrapper">без границ</span></h1>
-                <p>Главное культурное событие года. <br>Театр. Музыка. Перформанс.</p>
+                <span class="hero-pre-title">Fest-Пространство</span>
+                
+                <h1>Искусство<br><span id="particleContainer" class="italic-accent particle-wrapper">без границ</span></h1>
+                
+                <p class="hero-desc">Время танцевать - это не просто фестиваль, а полноценное искусство, способное передать глубокие эмоции и идеи. Это самовыражение, объединяющее людей из разных уголков мира.</p>
+                
                 <div class="hero-buttons">
-                    <a href="#program" class="btn-primary">Смотреть программу</a>
-                    <button id="openAboutBtn" class="btn-secondary">О нас</button>
+                    <a href="#schedule" class="btn-primary">Смотреть график</a>
+                    <a href="about.html" class="btn-secondary">О нас</a>
                 </div>
             </div>
         </div>
         <div class="hero-overlay"></div>
     </header>
 
-    <section id="about" class="section">
+    <section id="schedule" class="section dark-bg">
         <div class="container">
-            <h2 class="section-title">О Фестивале</h2>
-            <div class="about-grid">
-                <div class="about-card fade-in">
-                    <i class="fas fa-theater-masks"></i>
-                    <h3>Театр</h3>
-                    <p>Лучшие постановки от ведущих режиссеров страны.</p>
+            <h2 class="section-title">График</h2>
+            
+            <div class="schedule-graph">
+                <div class="graph-item fade-in">
+                    <img src="assets/graph/graph.png" alt="Общий график" class="graph-img">
                 </div>
-                <div class="about-card fade-in">
-                    <i class="fas fa-music"></i>
-                    <h3>Музыка</h3>
-                    <p>Живой звук, симфонические оркестры и инди-группы.</p>
+                
+                <div class="graph-item fade-in">
+                    <img src="assets/graph/voronej.png" alt="График Воронеж" class="graph-img">
+                    <a href="assets/graph/voronej.pdf" target="_blank" class="pdf-btn">
+                        <i class="fas fa-file-pdf"></i> Скачать PDF (Воронеж)
+                    </a>
                 </div>
-                <div class="about-card fade-in">
-                    <i class="fas fa-lightbulb"></i>
-                    <h3>Лекторий</h3>
-                    <p>Встречи с творцами, мастер-классы и дискуссии.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="program" class="section dark-bg">
-        <div class="container">
-            <h2 class="section-title">Программа</h2>
-            <div class="schedule">
-                <div class="schedule-item fade-in">
-                    <span class="time">12:00</span>
-                    <div class="details">
-                        <h3>Открытие фестиваля</h3>
-                        <p>Главная сцена. Приветственное слово и перформанс.</p>
-                    </div>
+                <div class="graph-item fade-in">
+                    <img src="assets/graph/lipeck.png" alt="График Липецк" class="graph-img">
+                    <a href="assets/graph/lipeck.pdf" target="_blank" class="pdf-btn">
+                        <i class="fas fa-file-pdf"></i> Скачать PDF (Липецк)
+                    </a>
                 </div>
-                <div class="schedule-item fade-in">
-                    <span class="time">14:30</span>
-                    <div class="details">
-                        <h3>Спектакль «Полет»</h3>
-                        <p>Театральная площадка. Режиссер А. Иванов.</p>
-                    </div>
+
+                <div class="graph-item fade-in">
+                    <img src="assets/graph/tula.png" alt="График Тула" class="graph-img">
+                    <a href="assets/graph/tula.pdf" target="_blank" class="pdf-btn">
+                        <i class="fas fa-file-pdf"></i> Скачать PDF (Тула)
+                    </a>
                 </div>
-                <div class="schedule-item fade-in">
-                    <span class="time">19:00</span>
-                    <div class="details">
-                        <h3>Вечерний Гала-концерт</h3>
-                        <p>Симфонический оркестр и световое шоу.</p>
-                    </div>
+
+                <div class="graph-item fade-in">
+                    <img src="assets/graph/piter.png" alt="График Санкт-Петербург" class="graph-img">
+                    <a href="assets/graph/piter.pdf" target="_blank" class="pdf-btn">
+                        <i class="fas fa-file-pdf"></i> Скачать PDF (Санкт-Петербург)
+                    </a>
+                </div>
+
+                <div class="graph-item fade-in">
+                    <img src="assets/graph/sochi.png" alt="График Сочи" class="graph-img">
+                    <a href="assets/graph/sochi.pdf" target="_blank" class="pdf-btn">
+                        <i class="fas fa-file-pdf"></i> Скачать PDF (Сочи)
+                    </a>
                 </div>
             </div>
         </div>
@@ -239,22 +232,6 @@
             <p class="copyright">© 2026 Lubov Festival.</p>
         </div>
     </footer>
-
-    <div id="aboutModal" class="modal">
-        <div class="modal-content about-modal-content">
-            <span class="close-btn about-close-btn">&times;</span>
-            <h2 style="text-align: center; font-family: 'Playfair Display', serif; margin-bottom: 30px;">Наши принципы</h2>
-            <div class="about-tabs">
-                <button class="about-tab-btn active" data-tab="1">Честное судейство</button>
-                <button class="about-tab-btn" data-tab="2">Круглые столы</button>
-                <button class="about-tab-btn" data-tab="3">Четкий тайминг</button>
-            </div>
-            <div class="about-content-area">
-                <h3 id="aboutTitle" class="fade-in-text">Честное судейство</h3>
-                <p id="aboutText" class="fade-in-text">Наши эксперты серьёзно относятся к конкурсной программе, поэтому не раздают призовые места просто так.</p>
-            </div>
-        </div>
-    </div>
 
     <div id="ticketModal" class="modal">
         <div class="modal-content">
@@ -325,9 +302,7 @@
                         </div>
 
                         <label class="form-label">Грантовый сертификат</label>
-                        <div class="input-group">
-                            <input type="text" id="grant_local" placeholder="Сумма сертификата (если есть)">
-                        </div>
+                        <div class="input-group"><input type="text" id="grant_local" placeholder="Сумма сертификата (если есть)"></div>
 
                         <div style="display: flex; gap: 10px; margin-top: 20px;">
                             <button type="button" id="backToSel_local" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Меню</button>
@@ -418,7 +393,7 @@
                         
                         <div id="accommodationContainer"></div>
                         
-                        <button type="button" id="addAccoBtn" class="btn-secondary full-width" style="border: 1px dashed var(--primary); color: var(--primary); margin-top: 15px;">+ Добавить группу (Пакет)</button>
+                        <button type="button" id="addAccoBtn" class="btn-secondary full-width" style="border: 1px dashed var(--primary); color: var(--primary); margin-top: 15px;">+ Добавить участника</button>
 
                         <div style="display: flex; gap: 10px; margin-top: 20px;">
                             <button type="button" id="backBtn2_remote" class="btn-secondary" style="flex: 1; color: var(--text-main);">&larr; Назад</button>

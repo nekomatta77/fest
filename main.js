@@ -60,8 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
+            
+            // Если ссылка пустая (просто "#"), прерываем функцию до querySelector
+            if (targetId === '#') return;
+
             const targetEl = document.querySelector(targetId);
-            if (targetId !== '#' && targetEl) {
+            if (targetEl) {
                 e.preventDefault();
                 targetEl.scrollIntoView({ behavior: 'smooth' });
             }
@@ -247,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Иногородние: Шаг 2 (Проживание) -> Программа
     if(nextBtn2_remote) {
         nextBtn2_remote.addEventListener('click', () => {
-            // Проверка, что добавлен хотя бы один пакет
             const accoCards = accoContainer.querySelectorAll('.acco-card');
             if(accoCards.length === 0) { alert("Добавьте информацию о проживании!"); return; }
             showStep(step_program);
@@ -272,7 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if(backBtn_program) {
         backBtn_program.addEventListener('click', () => {
-            // Если иногородние - назад на Шаг 2 (проживание), если местные - назад на Шаг 1 (общие)
             if(isRemote) showStep(step2_remote);
             else showStep(step1_local);
         });
@@ -297,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function addPerformanceRow(index) {
         const div = document.createElement('div');
         div.className = 'perf-card';
-        // ЗАДАЧА 1: "Точка" изменена на "Точка/Выход"
         div.innerHTML = `
             <span class="perf-title"># Номер ${index}</span>
             ${index > 1 ? '<i class="fas fa-times perf-remove"></i>' : ''}
@@ -330,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
         div.className = 'acco-card';
         div.innerHTML = `
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h4>Группа ${index}</h4>
+                <h4>Участник #${index}</h4>
                 ${index > 1 ? '<i class="fas fa-times perf-remove" style="color:red; cursor:pointer;"></i>' : ''}
             </div>
             
@@ -360,9 +361,17 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         const removeBtn = div.querySelector('.perf-remove');
-        if(removeBtn) removeBtn.addEventListener('click', () => { div.remove(); });
+        if(removeBtn) removeBtn.addEventListener('click', () => { div.remove(); updateAccommodationIndices(); });
         accoContainer.appendChild(div);
     }
+
+    function updateAccommodationIndices() {
+        accoContainer.querySelectorAll('.acco-card').forEach((card, i) => {
+            const title = card.querySelector('h4'); 
+            if(title) title.innerText = `Участник #${i + 1}`;
+        });
+    }
+
     if(addAccoBtn) addAccoBtn.addEventListener('click', () => {
         addAccommodationRow(accoContainer.querySelectorAll('.acco-card').length + 1);
     });
@@ -486,7 +495,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     accompanying: document.getElementById('accompanying_local').value,
                     manager: document.getElementById('manager_local').value,
                     grant: document.getElementById('grant_local').value,
-                    // Пустые поля иногородних
                     arrival: "", departure: "", accommodationList: []
                 };
             } else {
@@ -589,7 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- 6. ГАЛЕРЕЯ (ОСТАЛЬНОЕ БЕЗ ИЗМЕНЕНИЙ) ---
+    // --- 6. ГАЛЕРЕЯ ---
     const galleryPath = 'assets/galery/';
     const track = document.getElementById('galleryTrack');
     const fullGrid = document.getElementById('fullGalleryGrid');
@@ -643,7 +651,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTransform() { if (!lightboxImg) return; lightboxImg.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`; }
     function attachLightboxEvents(container) { if (!container) return; container.addEventListener('click', (e) => { if(e.target.tagName === 'IMG') openLightbox(e.target.src); }); }
     
-    attachLightboxEvents(track); attachLightboxEvents(fullGrid);
+    // Подключаем лайтбокс к галерее
+    attachLightboxEvents(track); 
+    attachLightboxEvents(fullGrid);
+    
+    // НОВОЕ: Подключаем лайтбокс к графику
+    const scheduleGraph = document.querySelector('.schedule-graph');
+    attachLightboxEvents(scheduleGraph);
+
     if(closeLightbox) closeLightbox.addEventListener('click', closeLightboxFunc);
     
     if (lightbox) {
