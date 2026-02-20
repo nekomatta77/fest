@@ -167,6 +167,15 @@ document.addEventListener('DOMContentLoaded', () => {
 Постановщик спектаклей и номеров, получивших первые премии и гран-при хореографических конкурсов и фестивалей.<br>
 Ведущий пластических тренингов.<br>
 Член жюри многочисленных российских и зарубежных фестивалей. Москва.`
+        },
+        {
+            id: 22,
+            name: "Вячеслав Аршинин",
+            role: "Заслуженный работник культуры Краснодарского края",
+            img: "assets/actors/arshin.png",
+            bio: `Заслуженный артист Украины.<br>
+Доцент кафедры хореографии Краснодарского государственного института культуры.<br>
+Руководитель народного ансамбля танца «Калына&#769;».`
         }
     ];
 
@@ -214,19 +223,17 @@ document.addEventListener('DOMContentLoaded', () => {
         juryTrack.appendChild(fragment);
     }
 
-    // --- 4. ЛОГИКА МОДАЛЬНОГО ОКНА (С ОПТИМИЗАЦИЕЙ) ---
+    // --- 4. ЛОГИКА МОДАЛЬНОГО ОКНА ---
     function openJuryModal(actor) {
         jName.innerText = actor.name;
         jRole.innerText = actor.role;
-        // Изменено на innerHTML, чтобы перенос строк <br> работал корректно
-        jBio.innerHTML = actor.bio;
+        jBio.innerHTML = actor.bio; // innerHTML для обработки <br> и спецсимволов ударения
         jImg.src = actor.img;
         
         requestAnimationFrame(() => {
             juryModal.classList.add('active');
             juryModal.style.display = 'flex';
             
-            // Используем общую функцию из main.js
             if (typeof window.toggleScrollLock === 'function') {
                 window.toggleScrollLock(true);
             } else {
@@ -239,7 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
         juryModal.style.display = 'none';
         juryModal.classList.remove('active');
         
-        // Снимаем блокировку через общую функцию
         if (typeof window.toggleScrollLock === 'function') {
             window.toggleScrollLock(false);
         } else {
