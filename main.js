@@ -734,3 +734,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (particleContainer) { particleContainer.innerHTML = createSpans(phrases[0]); setTimeout(animateParticles, 2000); }
 });
+// --- ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ (Счетчики и Параллакс) ---
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Анимация счетчиков статистики
+    const counters = document.querySelectorAll('.counter');
+    const animateCounters = () => {
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const speed = 200; // скорость анимации
+                const inc = target / speed;
+                
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 15);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
+    };
+
+    const statsObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                animateCounters();
+                statsObserver.unobserve(entry.target); // Анимируем только один раз
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const statsSection = document.querySelector('.stats-section');
+    if(statsSection) {
+        statsObserver.observe(statsSection);
+    }
+
+    // 2. Легкий Параллакс-эффект для галереи
+    window.addEventListener('scroll', () => {
+        const parallaxImages = document.querySelectorAll('.gallery-img-thumb, .gallery-grid-img');
+        parallaxImages.forEach(img => {
+            const rect = img.getBoundingClientRect();
+            // Проверяем, виден ли элемент на экране
+            if(rect.top < window.innerHeight && rect.bottom > 0) {
+                const speed = 0.05; // Сила параллакса
+                const yPos = (window.innerHeight - rect.top) * speed;
+                img.style.transform = `translateY(-${yPos}px)`;
+            }
+        });
+    });
+});

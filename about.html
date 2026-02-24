@@ -35,7 +35,8 @@
 
     <div class="menu-overlay"></div>
 
-    <nav class="navbar scrolled" style="background: white;"> <a href="index.html" class="logo-container" aria-label="На главную">
+    <nav class="navbar scrolled" style="background: white;"> 
+        <a href="index.html" class="logo-container" aria-label="На главную">
             <img src="assets/logo.png" alt="Вдохновение Лого" class="logo-img logo-base">
         </a>
         <ul class="nav-links">
@@ -44,7 +45,7 @@
             <li style="--i:3;"><a href="index.html#jury">Жюри</a></li>
             <li style="--i:4;"><a href="managers.html">Оргкомитет</a></li>
             <li style="--i:5;"><a href="about.html" style="color: var(--primary); font-weight: bold;">О нас</a></li>
-            <li style="--i:6;"><a href="#" class="btn-nav open-modal-btn">Заполнить анкету</a></li>
+            <li class="nav-cta-item" style="--i:6;"><a href="#" class="btn-nav open-modal-btn">Заполнить анкету</a></li>
         </ul>
         <div class="burger" aria-label="Меню" role="button" tabindex="0">
             <div class="line1" style="background: var(--text-main);"></div>
@@ -53,7 +54,26 @@
         </div>
     </nav>
 
-    <main class="about-page-wrapper">
+    <div class="marquee-wrapper" style="margin-top: 80px;">
+        <div class="marquee-content">
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+        </div>
+        <div class="marquee-content" aria-hidden="true">
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
+        </div>
+    </div>
+
+    <main class="about-page-wrapper" style="padding-top: 50px;">
         <div class="about-page-container fade-in visible">
             <h1 class="about-page-title">Всероссийский фестиваль хореографического искусства <br><span class="highlight-text" style="margin-top:0; text-align: center;">"Время танцевать"</span></h1>
             
@@ -79,24 +99,21 @@
 
     <footer id="contact" class="footer">
         <div class="container">
-            <h2>Стань частью <span class="italic-accent-dark">вдохновения</span></h2>
-            <p>Москва, Парк Останкино | 25-27 Июля</p>
+            <h2>Стань частью <span class="italic-accent-dark">FEST-пространства</span></h2>
             <a href="#" class="btn-primary open-modal-btn">Подать заявку</a>
             <div class="socials">
                 <a href="#" aria-label="VK"><i class="fab fa-vk"></i></a>
                 <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
-                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
-            <p class="copyright">© 2026 Lubov Festival.</p>
+            <p class="copyright">© 2026 Vremya_tancevat</p>
         </div>
     </footer>
 
     <div id="ticketModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
-            
             <div id="modalFormContainer">
-                <h2 style="font-family: 'Playfair Display', serif; text-align: center;">Анкета участника</h2>
+                <h2 style="font-family: 'Playfair Display', serif; text-align: center; background: linear-gradient(135deg, var(--primary) 0%, #1a2a6c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Анкета участника</h2>
                 
                 <form id="ticketForm" novalidate style="max-height: 70vh; overflow-y: auto; padding-right: 5px;">
                     
@@ -286,7 +303,7 @@
     <div id="galleryModal" class="modal gallery-modal">
         <div class="modal-content gallery-content">
             <span class="close-gallery-btn">&times;</span>
-            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px;">Фотоотчет</h2>
+            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; background: linear-gradient(135deg, var(--primary) 0%, #1a2a6c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Фотоотчет</h2>
             <div class="full-gallery-grid" id="fullGalleryGrid"></div>
         </div>
     </div>
