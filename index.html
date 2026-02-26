@@ -43,12 +43,12 @@
         @media (max-width: 480px) { .perf-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
-<body>
+<body id="home">
 
     <div class="menu-overlay"></div>
 
     <nav class="navbar">
-        <a href="#" class="logo-container" aria-label="На главную">
+        <a href="index.html" class="logo-container" aria-label="На главную">
             <img src="assets/logo.png" alt="Вдохновение Лого" class="logo-img logo-base">
             <img src="assets/logo.png" alt="" class="logo-img logo-overlay" aria-hidden="true">
         </a>
@@ -70,6 +70,12 @@
     <header class="hero">
         <div class="hero-content">
             <div class="glass-card fade-in visible">
+                
+                <div class="hero-top-links">
+                    <a href="managers.html" class="hero-top-link"><i class="fas fa-envelope"></i> Контакты</a>
+                    <a href="#jury" class="hero-top-link"><i class="fas fa-star"></i> Жюри</a>
+                </div>
+
                 <span class="hero-pre-title">Fest-Пространство</span>
                 
                 <h1>Искусство<br><span id="particleContainer" class="italic-accent particle-wrapper">без границ</span></h1>
@@ -78,7 +84,7 @@
                 
                 <div class="hero-buttons">
                     <a href="#schedule" class="btn-primary">Смотреть график</a>
-                    <a href="about.html" class="btn-secondary">О нас</a>
+                    <a href="#" class="btn-secondary open-modal-btn">Подать заявку</a>
                 </div>
             </div>
         </div>
@@ -147,13 +153,6 @@
             <div class="schedule-graph">
                 <div class="graph-item fade-in">
                     <img src="assets/graph/graph.png" alt="Общий график" class="graph-img">
-                </div>
-                
-                <div class="graph-item fade-in">
-                    <img src="assets/graph/voronej.png" alt="График Воронеж" class="graph-img">
-                    <a href="assets/graph/voronej.pdf" target="_blank" class="pdf-btn">
-                        <i class="fas fa-file-pdf"></i> Скачать PDF (Воронеж)
-                    </a>
                 </div>
 
                 <div class="graph-item fade-in">

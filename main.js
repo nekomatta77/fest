@@ -701,7 +701,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 10. LOGO ---
     const logoImg = document.querySelector('.logo-img');
-    if(logoImg) logoImg.addEventListener('click', function(e) { e.preventDefault(); this.style.transform = 'rotate(70deg)'; setTimeout(() => { this.style.transform = 'rotate(0deg)'; }, 600); });
+    if(logoImg) logoImg.addEventListener('click', function(e) { 
+        // e.preventDefault(); - УДАЛЕНО: теперь браузер перейдет по ссылке
+        this.style.transform = 'rotate(70deg)'; 
+        setTimeout(() => { this.style.transform = 'rotate(0deg)'; }, 600); 
+    });
 
     // --- 11. ESC ---
     document.addEventListener('keydown', (e) => {
@@ -734,6 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (particleContainer) { particleContainer.innerHTML = createSpans(phrases[0]); setTimeout(animateParticles, 2000); }
 });
+
 // --- ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ (Счетчики и Параллакс) ---
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Анимация счетчиков статистики
