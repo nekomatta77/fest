@@ -85,7 +85,7 @@ ul {
     list-style: none;
 }
 
-/* --- Навигация и Усиленный эффект стекла (Glassmorphism) --- */
+/* --- Навигация --- */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -256,11 +256,11 @@ ul {
     .nav-links li {
         margin: 10px 0; width: 100%; text-align: center; opacity: 0; transform: translate3d(0, 20px, 0);
         transition: opacity 0.4s ease, transform 0.4s ease;
-        order: 2; /* Обычные ссылки идут вторыми */
+        order: 2;
     }
 
     .nav-links li.nav-cta-item {
-        order: 1; /* Кнопка заполнить анкету первой */
+        order: 1;
         margin-top: -10px; margin-bottom: 20px;
     }
 
@@ -293,9 +293,8 @@ ul {
     box-shadow: 0 20px 50px rgba(0,0,0,0.2); display: inline-block; will-change: transform;
 }
 
-/* --- НОВЫЕ КНОПКИ ВЕРХА КАРТОЧКИ --- */
 .hero-top-links {
-    display: none; /* Скрыты на ПК по умолчанию */
+    display: none;
     justify-content: center;
     gap: 15px;
     margin-bottom: 20px;
@@ -327,13 +326,13 @@ ul {
     text-transform: uppercase; letter-spacing: 4px; margin-bottom: 10px; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 .hero-desc {
-    margin-bottom: 20px; /* Уменьшили отступ снизу после перестановки */
+    margin-bottom: 20px;
     color: rgba(255, 255, 255, 0.95); font-weight: 400; letter-spacing: 0.5px;
     font-size: 1rem; line-height: 1.6; max-width: 650px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 .hero h1 {
     font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; color: #ffffff;
-    line-height: 1.1; margin-bottom: 40px; /* Увеличили отступ снизу, так как теперь это последний текстовый элемент перед кнопками */
+    line-height: 1.1; margin-bottom: 40px;
     letter-spacing: -1px; text-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 .italic-accent {
@@ -358,22 +357,93 @@ ul {
     100% { transform: translateX(-100%); }
 }
 
-/* --- Блок Статистики --- */
+/* --- ОБНОВЛЕННЫЙ БЛОК СТАТИСТИКИ (Glassmorphism & Icons) --- */
 .stats-section {
-    padding: 60px 5%; background: var(--bg-page); position: relative; z-index: 2;
+    padding: 80px 5%;
+    background: var(--bg-page);
+    position: relative;
+    z-index: 2;
 }
 .stats-container {
-    display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px; max-width: 1000px; margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 40px;
+    padding: 50px 30px;
+    box-shadow: 0 20px 50px rgba(110, 133, 183, 0.15);
 }
-.stat-box { text-align: center; flex: 1; min-width: 200px; padding: 20px; }
-.stat-number {
-    font-family: var(--font-serif); font-size: 4rem; font-weight: 700;
+.stat-box {
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+    padding: 20px;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stat-box:hover {
+    transform: translateY(-10px);
+}
+/* Полупрозрачные вертикальные разделители */
+.stat-box:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: 15%;
+    height: 70%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(110, 133, 183, 0.3), transparent);
+}
+.stat-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
     background: linear-gradient(135deg, var(--primary) 0%, #1a2a6c 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: 5px; display: flex; justify-content: center; align-items: center;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(110, 133, 183, 0.3);
+}
+.stat-icon-wrapper i {
+    font-size: 1.5rem;
+    color: white;
+}
+.stat-number {
+    font-family: var(--font-main);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+.stat-number .counter {
+    background: linear-gradient(135deg, var(--primary) 0%, #1a2a6c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.stat-number .plus {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-left: 2px;
+    font-weight: 600;
 }
 .stat-text {
-    font-size: 1rem; font-weight: 600; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /* --- Кнопки --- */
@@ -416,7 +486,7 @@ ul {
 .graph-item:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(110, 133, 183, 0.2); }
 .graph-img {
     width: 100%; height: auto; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: contain;
-    background: #fdfbf7; cursor: pointer; transition: transform 0.1s ease-out; /* База для параллакса */
+    background: #fdfbf7; cursor: pointer; transition: transform 0.1s ease-out; 
 }
 
 .pdf-btn {
@@ -437,7 +507,6 @@ ul {
 .gallery-track::-webkit-scrollbar { height: 6px; }
 .gallery-track::-webkit-scrollbar-thumb { background-color: var(--primary-light); border-radius: 4px; }
 
-/* Фото с параллаксом */
 .gallery-img-thumb {
     height: 300px; width: auto; border-radius: 20px; object-fit: cover; flex-shrink: 0;
     scroll-snap-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.1s ease-out; 
@@ -567,7 +636,6 @@ ul {
 /* Остальные адаптивные стили */
 @media (max-width: 1024px) { .full-gallery-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) {
-    /* Добавлен возврат кнопок "Контакты" и "Жюри" для мобильных */
     .hero-top-links { display: flex; } 
 
     .glass-card { padding: 40px 20px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); }
@@ -576,6 +644,13 @@ ul {
     .btn-primary, .btn-secondary { width: 100%; margin: 5px 0; }
     .section { padding: 80px 5%; }
     .dark-bg { margin: 0; border-radius: 0; }
+    
+    /* Адаптив для нового блока статистики */
+    .stat-box:not(:last-child)::after { display: none; }
+    .stats-container { padding: 30px 20px; border-radius: 30px; }
+    .stat-number { font-size: 3rem; }
+    .stat-number .plus { font-size: 2rem; }
+
     .gallery-img-thumb { height: 220px; }
     .full-gallery-grid { grid-template-columns: repeat(2, 1fr); }
     .gallery-modal .modal-content { padding: 20px; }
@@ -584,7 +659,6 @@ ul {
     .jury-track { padding: 40px max(20px, calc(50% - 150px)); }
     .section-title { text-align: center !important; font-size: 2.2rem; margin-bottom: 40px; }
     .graph-item { padding: 15px; }
-    .stat-number { font-size: 2.8rem; }
 }
 
 /* --- СТИЛИ ДЛЯ ВЫБОРА ТИПА ЗАЯВКИ --- */
