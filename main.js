@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- 0. НАСТРОЙКИ ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVobWUix4SYWjF2yhEuyejyP6HfukcV4y_pECqGCSsj874dwR4cPFxHlrpIunIGyE/exec'; 
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJkJQ4aqATBu4SeZe10IjHODpSgjua-blp7R3taAFS98v9mHZgp6BA8FpOMIRSDc0lgA/exec'; 
 
     // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
     window.toggleScrollLock = function(isLocked) {
