@@ -280,7 +280,8 @@ ul {
 /* --- Hero --- */
 .hero {
     height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
-    background: url('../assets/bg-main.jpg') no-repeat center/cover; position: relative; padding: 0 20px; will-change: transform;
+    /* ЗАМЕНИЛИ РАСШИРЕНИЕ bg-main НА WEBP */
+    background: url('../assets/bg-main.webp') no-repeat center/cover; position: relative; padding: 0 20px; will-change: transform;
 }
 .hero-overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
