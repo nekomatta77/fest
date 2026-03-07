@@ -605,7 +605,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createImgElement(index, className) {
         const imgEl = document.createElement('img');
-        imgEl.src = `${galleryPath}photo${index}.png`;
+        // ЗДЕСЬ МЫ ЗАМЕНИЛИ .png НА .webp
+        imgEl.src = `${galleryPath}photo${index}.webp`;
         imgEl.alt = `Фото ${index}`;
         imgEl.classList.add(className);
         imgEl.loading = "lazy";
