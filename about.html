@@ -37,7 +37,7 @@
 
     <nav class="navbar scrolled" style="background: white;"> 
         <a href="index.html" class="logo-container" aria-label="На главную">
-            <img src="assets/logo.png" alt="Вдохновение Лого" class="logo-img logo-base">
+            <img src="assets/logo.webp" alt="Вдохновение Лого" class="logo-img logo-base">
         </a>
         <ul class="nav-links">
             <li style="--i:1;"><a href="index.html#schedule">График</a></li>
@@ -54,48 +54,32 @@
         </div>
     </nav>
 
-    <div class="marquee-wrapper" style="margin-top: 80px;">
-        <div class="marquee-content">
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-        </div>
-        <div class="marquee-content" aria-hidden="true">
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-            <span class="marquee-item">ВРЕМЯ ТАНЦЕВАТЬ &bull;</span>
-        </div>
-    </div>
-
-    <main class="about-page-wrapper" style="padding-top: 50px;">
-        <div class="about-page-container fade-in visible">
-            <h1 class="about-page-title">Всероссийский фестиваль хореографического искусства <br><span class="highlight-text" style="margin-top:0; text-align: center;">"Время танцевать"</span></h1>
+    <main class="about-hero">
+        <div class="hero-overlay"></div>
+        <div class="about-glass-container fade-in visible">
+            <span class="hero-pre-title">О Фестивале</span>
+            <h1 class="about-page-title text-white">Время танцевать</h1>
             
-            <div class="about-page-text">
+            <div class="about-page-text text-white">
                 <p>Мы создаем атмосферные, профессиональные, веселые и дружелюбные фестивали танцевального искусства с 2018 года.</p>
                 <p>Наша команда тщательно подходит к каждому событию: индивидуальное отношение к коллективам, внимательное составление программ выступлений и гибкий подход к графикам.</p>
-                <span class="highlight-text">Мотивация, атмосфера, творчество, любовь, талант, вдохновение, искусство, объединение, призвание — это всё о нашем фестивале!</span>
+                
+                <div class="about-highlights">
+                    <span class="highlight-badge">Мотивация</span>
+                    <span class="highlight-badge">Атмосфера</span>
+                    <span class="highlight-badge">Творчество</span>
+                    <span class="highlight-badge">Любовь</span>
+                    <span class="highlight-badge">Талант</span>
+                    <span class="highlight-badge">Вдохновение</span>
+                    <span class="highlight-badge">Искусство</span>
+                    <span class="highlight-badge">Объединение</span>
+                    <span class="highlight-badge">Призвание</span>
+                </div>
+                
+                <p class="about-footer-text">— это всё о нашем фестивале!</p>
             </div>
         </div>
     </main>
-
-    <section id="gallery" class="section gallery-section dark-bg" style="margin: 0; border-radius: 0; border: none; padding-top: 60px;">
-        <div class="container">
-            <h2 class="section-title compact-title">Галерея</h2>
-        </div>
-        <div class="gallery-scroller-container fade-in">
-            <div class="gallery-track" id="galleryTrack"></div>
-        </div>
-        <div class="container" style="text-align: center; margin-top: 30px;">
-            <button id="openGalleryBtn" class="btn-secondary" style="border-color: var(--primary); color: var(--text-main); background: white;">Загрузка фото...</button>
-        </div>
-    </section>
 
     <footer id="contact" class="footer">
         <div class="container">
@@ -298,20 +282,6 @@
                 <button class="btn-secondary close-modal-action" style="margin-top: 20px;">Закрыть</button>
             </div>
         </div>
-    </div>
-
-    <div id="galleryModal" class="modal gallery-modal">
-        <div class="modal-content gallery-content">
-            <span class="close-gallery-btn">&times;</span>
-            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; background: linear-gradient(135deg, var(--primary) 0%, #1a2a6c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Фотоотчет</h2>
-            <div class="full-gallery-grid" id="fullGalleryGrid"></div>
-        </div>
-    </div>
-
-    <div id="lightbox" class="lightbox">
-        <span class="close-lightbox">&times;</span>
-        <div class="lightbox-wrapper"><img class="lightbox-image" id="lightboxImg" src="" alt="Full view"></div>
-        <div class="zoom-hint">Колесико / Жест - Зум | Драг - Перемещение</div>
     </div>
 
     <script src="main.js"></script>
