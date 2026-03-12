@@ -140,7 +140,9 @@ ul {
     transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: transform;
     cursor: pointer;
+    /* ИСПРАВЛЕНИЕ VS CODE: добавлено стандартное свойство backface-visibility */
     -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     transform: translateZ(0);
 }
 
@@ -368,7 +370,11 @@ ul {
 .stat-number {
     font-family: var(--font-serif); font-size: 4rem; font-weight: 700;
     background: linear-gradient(135deg, var(--primary) 0%, #1a2a6c 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    /* ИСПРАВЛЕНИЕ VS CODE: добавлены background-clip и color */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
     margin-bottom: 5px; display: flex; justify-content: center; align-items: center;
 }
 .stat-text {
@@ -395,8 +401,11 @@ ul {
     margin-bottom: 60px;
     text-align: center;
     background: linear-gradient(135deg, var(--primary) 0%, #1a2a6c 100%);
+    /* ИСПРАВЛЕНИЕ VS CODE: добавлены background-clip и color */
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
     display: block; 
 }
 
