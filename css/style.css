@@ -46,9 +46,7 @@
 /* --- Класс для блокировки прокрутки --- */
 body.lock-scroll {
     overflow: hidden !important;
-    height: 100vh;
-    touch-action: none;
-    padding-right: 8px;
+    /* Убраны height, touch-action и padding-right, чтобы не ломать скролл внутри окон и предотвратить прыжки страницы */
 }
 
 * {
@@ -59,17 +57,14 @@ body.lock-scroll {
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden; /* Предотвращает горизонтальный скролл на смартфонах */
-    width: 100%;
+    /* Убраны overflow-x и width: 100%, так как они ломают колесико мыши на ПК в Windows */
 }
 
 body {
     font-family: var(--font-main);
     color: var(--text-main);
-    overflow-x: hidden;
-    width: 100%;
+    overflow-x: hidden; /* Скрываем горизонтальный скролл только у body */
     line-height: 1.6;
-    overscroll-behavior: none;
     background-color: var(--bg-page);
     background-image: 
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232c3e50' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
@@ -283,7 +278,7 @@ ul {
 
 /* --- Hero --- */
 .hero {
-    min-height: 100vh; /* Динамическая высота для корректного отображения на телефонах */
+    min-height: 100vh;
     min-height: 100dvh;
     display: flex; 
     align-items: center; 
@@ -291,7 +286,7 @@ ul {
     text-align: center;
     background: url('../assets/bg-main.webp') no-repeat center/cover; 
     position: relative; 
-    padding: 100px 20px 40px; /* Отступы, чтобы контент не перекрывался шапкой */
+    padding: 100px 20px 40px; 
     will-change: transform;
 }
 .hero-overlay {
@@ -304,7 +299,7 @@ ul {
     background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     padding: 60px 40px; border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
-    width: 100%; /* Карточка не вылазит за пределы контейнера */
+    width: 100%; 
     margin: 0 auto;
     will-change: transform;
 }
@@ -340,7 +335,7 @@ ul {
 .hero-pre-title {
     display: block; font-family: var(--font-main); font-size: 1.2rem; color: var(--secondary);
     text-transform: uppercase; letter-spacing: 4px; margin-bottom: 10px; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    word-wrap: break-word; /* Автоматический перенос длинных слов */
+    word-wrap: break-word; 
     overflow-wrap: break-word;
 }
 .hero-desc {
@@ -612,10 +607,10 @@ ul {
 @media (max-width: 768px) {
     .hero-top-links { display: flex; flex-wrap: wrap; } 
     .glass-card { padding: 40px 20px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); width: 100%; margin: 0 auto; box-sizing: border-box; }
-    .hero-pre-title { font-size: 0.95rem; letter-spacing: 2px; } /* Предотвращает горизонтальный разрыв карточки из-за длинного текста */
+    .hero-pre-title { font-size: 0.95rem; letter-spacing: 2px; }
     .hero h1 { font-size: 2.8rem; margin-bottom: 15px; }
-    .hero-buttons { display: flex; flex-direction: column; width: 100%; box-sizing: border-box; }
-    .btn-primary, .btn-secondary { width: 100%; margin: 5px 0; box-sizing: border-box; }
+    .hero-buttons { display: flex; flex-direction: column; width: 100%; box-sizing: border-box; gap: 12px; }
+    .btn-primary, .btn-secondary { width: 100%; margin: 0; padding: 14px 20px; box-sizing: border-box; }
     .section { padding: 80px 5%; }
     .dark-bg { margin: 0; border-radius: 0; }
     .gallery-img-thumb { height: 220px; }

@@ -6,8 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
     window.toggleScrollLock = function(isLocked) {
         if (isLocked) {
+            // Динамически высчитываем ширину скроллбара, чтобы страница не прыгала в стороны
+            const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.paddingRight = scrollBarWidth + 'px';
             document.body.classList.add('lock-scroll');
         } else {
+            // Сбрасываем стили
+            document.body.style.paddingRight = '';
             document.body.classList.remove('lock-scroll');
         }
     };
@@ -605,7 +610,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createImgElement(index, className) {
         const imgEl = document.createElement('img');
-        // ЗДЕСЬ МЫ ЗАМЕНИЛИ .png НА .webp
         imgEl.src = `${galleryPath}photo${index}.webp`;
         imgEl.alt = `Фото ${index}`;
         imgEl.classList.add(className);
@@ -652,11 +656,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTransform() { if (!lightboxImg) return; lightboxImg.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`; }
     function attachLightboxEvents(container) { if (!container) return; container.addEventListener('click', (e) => { if(e.target.tagName === 'IMG') openLightbox(e.target.src); }); }
     
-    // Подключаем лайтбокс к галерее
     attachLightboxEvents(track); 
     attachLightboxEvents(fullGrid);
     
-    // НОВОЕ: Подключаем лайтбокс к графику
     const scheduleGraph = document.querySelector('.schedule-graph');
     attachLightboxEvents(scheduleGraph);
 
@@ -703,7 +705,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 10. LOGO ---
     const logoImg = document.querySelector('.logo-img');
     if(logoImg) logoImg.addEventListener('click', function(e) { 
-        // e.preventDefault(); - УДАЛЕНО: теперь браузер перейдет по ссылке
         this.style.transform = 'rotate(70deg)'; 
         setTimeout(() => { this.style.transform = 'rotate(0deg)'; }, 600); 
     });
@@ -749,7 +750,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const updateCount = () => {
                 const target = +counter.getAttribute('data-target');
                 const count = +counter.innerText;
-                const speed = 200; // скорость анимации
+                const speed = 200;
                 const inc = target / speed;
                 
                 if (count < target) {
@@ -767,7 +768,7 @@ document.addEventListener("DOMContentLoaded", () => {
         entries.forEach(entry => {
             if(entry.isIntersecting) {
                 animateCounters();
-                statsObserver.unobserve(entry.target); // Анимируем только один раз
+                statsObserver.unobserve(entry.target); 
             }
         });
     }, { threshold: 0.5 });
@@ -782,9 +783,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const parallaxImages = document.querySelectorAll('.gallery-img-thumb, .gallery-grid-img');
         parallaxImages.forEach(img => {
             const rect = img.getBoundingClientRect();
-            // Проверяем, виден ли элемент на экране
             if(rect.top < window.innerHeight && rect.bottom > 0) {
-                const speed = 0.05; // Сила параллакса
+                const speed = 0.05; 
                 const yPos = (window.innerHeight - rect.top) * speed;
                 img.style.transform = `translateY(-${yPos}px)`;
             }
